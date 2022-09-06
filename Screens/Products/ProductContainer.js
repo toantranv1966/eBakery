@@ -24,28 +24,44 @@ import {
 import ProductList from './ProductList';
 import SearchProduct from './SearchedProducts';
 import Banner from '../../Shared/Banner';
-
-const data = require('../../assets/data/products.json');
+import CategoryFilter from './CategoryFilter';
 
 var { height } = Dimensions.get('window');
+
+const data = require('../../assets/data/products.json');
+const productCategories = require('../../assets/data/categories.json');
 
 const ProductContainer = (props) => {
   const [products, setProducts] = useState([]);
   // Search Function
   const [productsFiltered, setProductsFiltered] = useState([]);
   const [isFocused, setIsFocused] = useState();
+  // Categories Function
+  const [categories, setCategories] = useState([]);
+  const [productsCtg, setProductsCtg] = useState([]);
+  // Set badge will be active.
+  const [active, setActive] = useState();
+  // InitialState
+  const [initialState, setInitialState] = useState();
 
   useEffect(() => {
     setProducts(data);
     // Search Function
     setProductsFiltered(data);
     setIsFocused(false);
+    setCategories(productCategories);
+    setProductsCtg(data);
+    setActive(-1);
+    setInitialState(data);
 
     return () => {
       setProducts([]);
       // Search Function
       setProductsFiltered([]);
       setIsFocused();
+      setCategories([]);
+      setActive();
+      setInitialState();
     };
   }, []);
 
@@ -62,6 +78,20 @@ const ProductContainer = (props) => {
 
   const onBlur = () => {
     setIsFocused(false);
+  };
+
+  // Categories Function ?
+  const changeCtg = (ctg) => {
+    {
+      ctg === 'all'
+        ? [setProductsCtg(initialState), setActive(true)]
+        : [
+            setProductsCtg(
+              products.filter((i) => i.category._id === ctg),
+              setActive(true)
+            ),
+          ];
+    }
   };
 
   return (
@@ -84,37 +114,43 @@ const ProductContainer = (props) => {
           }
         />
       </VStack>
-      {/* <Stack space={4} w="100%" maxW="300px" mx="auto" mb="2" mt="2">
-        <Input
-          style={{ width: 300 }}
-          variant="rounded"
-          placeholder="Search"
-          value={productsFiltered}
-          isFocused={openList}
-          onChangeText={(text) => searchProduct(text)}
-        />
-        {isFocused == true ? <Icon onPress={onBlur} name="ios-close" /> : null}
-      </Stack> */}
 
       {isFocused == true ? (
         <SearchProduct productsFiltered={productsFiltered} />
       ) : (
-        <View style={styles.container}>
+        <ScrollView>
           <View>
-            <Banner />
+            <View>
+              <Banner />
+            </View>
+            <View>
+              <CategoryFilter
+                categories={categories}
+                categoryFilter={changeCtg}
+                productsCtg={productsCtg}
+                active={active}
+                setActive={setActive}
+              />
+            </View>
+            {productsCtg.length > 0 ? (
+              <View style={styles.listContainer}>
+                {productsCtg.map((item) => {
+                  return (
+                    <ProductList
+                      navigation={props.navigation}
+                      key={item.name}
+                      item={item}
+                    />
+                  );
+                })}
+              </View>
+            ) : (
+              <View style={[styles.center, { height: height / 2 }]}>
+                <Text>No products found</Text>
+              </View>
+            )}
           </View>
-          <View style={styles.listContainer}>
-            <FlatList
-              // horizontal
-              numColumns={2}
-              data={products}
-              renderItem={({ item }) => (
-                <ProductList key={item.id} item={item} />
-              )}
-              keyExtractor={(item) => item.name}
-            />
-          </View>
-        </View>
+        </ScrollView>
       )}
     </NativeBaseProvider>
   );
