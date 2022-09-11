@@ -1,67 +1,58 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   StyleSheet,
   ActivityIndicator,
   FlatList,
-  ScrollView,
-  Dimensions,
   Text,
-  TextInput,
 } from 'react-native';
 import {
-  NativeBaseProvider,
   Container,
   Header,
   Icon,
   Item,
   Input,
+  NativeBaseProvider,
+  extendTheme,
+  Box,
+  HStack,
+  Button,
+  Center,
   VStack,
-  Heading,
+  IconButton,
   Stack,
+  Pressable,
 } from 'native-base';
-
+import { AntDesign } from '@expo/vector-icons';
+import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import ProductList from './ProductList';
-import SearchProduct from './SearchedProducts';
+import SearchedProduct from './SearchedProducts';
 import Banner from '../../Shared/Banner';
-import CategoryFilter from './CategoryFilter';
 
-var { height } = Dimensions.get('window');
+const newColorTheme = {
+  brand: {
+    900: '#5B8DF6',
+    800: '#ffffff',
+    700: '#cccccc',
+  },
+};
 
+const theme = extendTheme({
+  colors: newColorTheme,
+});
 const data = require('../../assets/data/products.json');
-const productCategories = require('../../assets/data/categories.json');
-
-const ProductContainer = (props) => {
+const ProductContainer = () => {
   const [products, setProducts] = useState([]);
-  // Search Function
   const [productsFiltered, setProductsFiltered] = useState([]);
-  const [isFocused, setIsFocused] = useState();
-  // Categories Function
-  const [categories, setCategories] = useState([]);
-  const [productsCtg, setProductsCtg] = useState([]);
-  // Set badge will be active.
-  const [active, setActive] = useState();
-  // InitialState
-  const [initialState, setInitialState] = useState();
-
+  const [focus, setFocus] = useState();
   useEffect(() => {
     setProducts(data);
-    // Search Function
     setProductsFiltered(data);
-    setIsFocused(false);
-    setCategories(productCategories);
-    setProductsCtg(data);
-    setActive(-1);
-    setInitialState(data);
-
+    setFocus(false);
     return () => {
       setProducts([]);
-      // Search Function
       setProductsFiltered([]);
-      setIsFocused();
-      setCategories([]);
-      setActive();
-      setInitialState();
+      setFocus();
     };
   }, []);
 
@@ -73,116 +64,70 @@ const ProductContainer = (props) => {
   };
 
   const openList = () => {
-    setIsFocused(true);
+    setFocus(true);
   };
-
   const onBlur = () => {
-    setIsFocused(false);
+    setFocus(false);
   };
-
-  // Categories Function ?
-  const changeCtg = (ctg) => {
-    {
-      ctg === 'all'
-        ? [setProductsCtg(initialState), setActive(true)]
-        : [
-            setProductsCtg(
-              products.filter((i) => i.category._id === ctg),
-              setActive(true)
-            ),
-          ];
-    }
-  };
-
   return (
-    <NativeBaseProvider>
-      <VStack w="100%" space={5} alignSelf="center">
-        <Input
-          placeholder="Search"
-          variant="filled"
-          width="100%"
-          borderRadius="10"
-          py="1"
-          px="2"
-          InputLeftElement={
-            <Icon
-              ml="2"
-              size="4"
-              color="gray.400"
-              // as={<Ionicons name="ios-search" />}
-            />
-          }
-        />
-      </VStack>
-
-      {isFocused == true ? (
-        <SearchProduct productsFiltered={productsFiltered} />
-      ) : (
-        <ScrollView>
-          <View>
-            <View>
-              <Banner />
-            </View>
-            <View>
-              <CategoryFilter
-                categories={categories}
-                categoryFilter={changeCtg}
-                productsCtg={productsCtg}
-                active={active}
-                setActive={setActive}
-              />
-            </View>
-            {productsCtg.length > 0 ? (
-              <View style={styles.listContainer}>
-                {productsCtg.map((item) => {
-                  return (
-                    <ProductList
-                      navigation={props.navigation}
-                      key={item.name}
-                      item={item}
+    <NativeBaseProvider theme={theme}>
+      <NavigationContainer>
+        <View>
+          <Stack space={4} w="100%" alignItems="center">
+            <Input
+              variant="rounded"
+              w={{
+                base: '90%',
+                md: '25%',
+              }}
+              InputRightElement={
+                <Pressable onPress={onBlur}>
+                  {focus == true ? (
+                    <Icon
+                      as={<AntDesign name="close" size={24} color="black" />}
+                      size={5}
+                      mr="2"
+                      color="muted.400"
                     />
-                  );
-                })}
+                  ) : null}
+                </Pressable>
+              }
+              placeholder="Search"
+              onFocus={openList}
+              onChangeText={(text) => searchProduct(text)}
+            />
+          </Stack>
+
+          {focus == true ? (
+            <SearchedProduct productsFiltered={productsFiltered} />
+          ) : (
+            <View>
+              <View>
+                <Banner />
               </View>
-            ) : (
-              <View style={[styles.center, { height: height / 2 }]}>
-                <Text>No products found</Text>
+              <View style={styles.listContainer}>
+                <FlatList
+                  data={products}
+                  numColumns={2}
+                  renderItem={({ item }) => (
+                    <ProductList key={item.brand} item={item} />
+                  )}
+                  keyExtractor={(item) => item.brand}
+                />
               </View>
-            )}
-          </View>
-        </ScrollView>
-      )}
+            </View>
+          )}
+        </View>
+      </NavigationContainer>
     </NativeBaseProvider>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
-    flexWrap: 'wrap',
-    backgroundColor: 'gainsboro',
-  },
-  listContainer: {
-    height: height,
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    flexWrap: 'wrap',
-    backgroundColor: 'gainsboro',
-  },
-  center: {
-    justifyContent: 'center',
+    backgroundColor: '#fff',
     alignItems: 'center',
-  },
-  textInputStyle: {
-    width: 300,
-    height: 50,
-    borderRadius: 5,
-    borderWidth: 1,
-    paddingLeft: 20,
-    margin: 5,
-    borderColor: '#009688',
-    backgroundColor: 'white',
+    justifyContent: 'center',
   },
 });
-
 export default ProductContainer;

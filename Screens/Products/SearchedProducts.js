@@ -1,43 +1,107 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import { Content, Left, Body, ListItem, Thumbnail, Text } from 'native-base';
+import { View, StyleSheet, Dimensions, ScrollView } from 'react-native';
+// import { Content, Left, Body, ListItem, Thumbnail, Text } from 'native-base';
+import {
+  Box,
+  FlatList,
+  Heading,
+  Avatar,
+  HStack,
+  VStack,
+  Text,
+  Spacer,
+  Center,
+  NativeBaseProvider,
+  Button,
+} from 'native-base';
+
+import ProductList from './ProductList';
 
 var { width } = Dimensions.get('window');
 
-const SearchProduct = (props) => {
+const SearchedProduct = (props) => {
   const { productsFiltered } = props;
+  console.log(productsFiltered);
   return (
-    <Content style={{ width: width }}>
+    <Box>
+      <Heading fontSize="xl" p="4" pb="3">
+        Number product : {productsFiltered.length}
+      </Heading>
       {productsFiltered.length > 0 ? (
-        productsFiltered.map((item) => {
-          <ListItem
-            // onPress={navigation}
-            key={item.id}
-            avatar
-          >
-            <Left>
-              <Thumbnail
-                source={{
-                  uri: item.image
-                    ? item.image
-                    : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png',
-                }}
-              />
-            </Left>
-            <Body>
-              <Text>{item.name}</Text>
-              <Text note>{item.description}</Text>
-            </Body>
-          </ListItem>;
-        })
+        <FlatList
+          data={productsFiltered}
+          renderItem={({ item }) => (
+            <Box
+              borderBottomWidth="1"
+              _dark={{
+                borderColor: 'muted.50',
+              }}
+              borderColor="muted.800"
+              pl={['0', '4']}
+              pr={['0', '5']}
+              py="2"
+            >
+              <HStack space={[2, 3]} justifyContent="space-between">
+                <Avatar
+                  size="48px"
+                  source={{
+                    uri: item.image
+                      ? item.image
+                      : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png',
+                  }}
+                />
+                <VStack>
+                  <Text
+                    _dark={{
+                      color: 'warmGray.50',
+                    }}
+                    color="coolGray.800"
+                    bold
+                  >
+                    {item.name}
+                  </Text>
+                  <Text
+                    color="coolGray.600"
+                    _dark={{
+                      color: 'warmGray.200',
+                    }}
+                  >
+                    {item.description}
+                  </Text>
+                  <Button rounded success>
+                    <Text>Add to Cart</Text>
+                  </Button>
+                </VStack>
+                <Spacer />
+              </HStack>
+            </Box>
+          )}
+          keyExtractor={(item) => item.id}
+        />
       ) : (
         <View style={styles.center}>
           <Text style={{ alignSelf: 'center' }}>
-            No product match the selected criteria
+            No products match the selected criteria
           </Text>
         </View>
       )}
-    </Content>
+    </Box>
+
+    // <ScrollView>
+    //   <View style={{ width: width }}>
+    //     {productsFiltered.length > 0 ? (
+    //       <View style={styles.listContainer}>
+    //         {productsFiltered.map((item) => {
+    //           return <ProductList key={item.name} item={item} />;
+    //         })}
+    //       </View>
+    //     ) : (
+    //       <View style={[styles.center]}>
+    //         <Text>No products found</Text>
+    //       </View>
+    //     )}
+    //   </View>
+    // </ScrollView>
   );
 };
 
@@ -48,4 +112,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchProduct;
+export default SearchedProduct;

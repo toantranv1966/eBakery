@@ -12,3 +12,6 @@
 1/ Search Function : No work
 
 2/ Banner
+
+6-11/9/2000
+Fix Search Function : work one, not clear when onblur
