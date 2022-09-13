@@ -5,6 +5,8 @@ import {
   ActivityIndicator,
   FlatList,
   Text,
+  ScrollView,
+  Dimensions,
 } from 'react-native';
 import {
   Container,
@@ -28,6 +30,9 @@ import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import ProductList from './ProductList';
 import SearchedProduct from './SearchedProducts';
 import Banner from '../../Shared/Banner';
+import CategoryFilter from './CategoryFilter';
+
+var { height } = Dimensions.get('window');
 
 const newColorTheme = {
   brand: {
@@ -41,18 +46,32 @@ const theme = extendTheme({
   colors: newColorTheme,
 });
 const data = require('../../assets/data/products.json');
+const productsCategories = require('../../assets/data/categories.json');
 const ProductContainer = () => {
   const [products, setProducts] = useState([]);
   const [productsFiltered, setProductsFiltered] = useState([]);
   const [focus, setFocus] = useState();
+  const [categories, setCategories] = useState([]);
+  const [productsCtg, setProductsCtg] = useState([]);
+  const [active, setActive] = useState();
+  const [initialState, setInitialState] = useState([]);
+
   useEffect(() => {
+    setFocus(false);
+    setActive(-1);
+
     setProducts(data);
     setProductsFiltered(data);
-    setFocus(false);
+    setCategories(productsCategories);
+    setProductsCtg(data);
+    setInitialState(data);
     return () => {
       setProducts([]);
       setProductsFiltered([]);
       setFocus();
+      setCategories([]);
+      setActive();
+      setInitialState();
     };
   }, []);
 
@@ -69,6 +88,23 @@ const ProductContainer = () => {
   const onBlur = () => {
     setFocus(false);
   };
+
+  // Categories
+  const changeCtg = (ctg) => {
+    console.log(ctg);
+    {
+      ctg === 'all'
+        ? [setProductsCtg(initialState), setActive(true)]
+        : [
+            setProductsCtg(
+              products.filter((i) => i.category._id === ctg),
+              setActive(true)
+            ),
+          ];
+    }
+    console.log('productsCtg : ', productsCtg);
+  };
+
   return (
     <NativeBaseProvider theme={theme}>
       <NavigationContainer>
@@ -101,21 +137,39 @@ const ProductContainer = () => {
           {focus == true ? (
             <SearchedProduct productsFiltered={productsFiltered} />
           ) : (
-            <View>
+            <ScrollView>
               <View>
-                <Banner />
+                <View>
+                  <Banner />
+                </View>
+                <View>
+                  <CategoryFilter
+                    categories={categories}
+                    categoryFilter={changeCtg}
+                    productsCtg={productsCtg}
+                    active={active}
+                    setActive={setActive}
+                  />
+                </View>
+                {productsCtg.length > 0 ? (
+                  <View style={styles.listContainer}>
+                    {productsCtg.map((item) => {
+                      return (
+                        <ProductList
+                          // navigation={props.navigation}
+                          key={item.name}
+                          item={item}
+                        />
+                      );
+                    })}
+                  </View>
+                ) : (
+                  <View style={[styles.center, { height: height / 2 }]}>
+                    <Text>No products found</Text>
+                  </View>
+                )}
               </View>
-              <View style={styles.listContainer}>
-                <FlatList
-                  data={products}
-                  numColumns={2}
-                  renderItem={({ item }) => (
-                    <ProductList key={item.brand} item={item} />
-                  )}
-                  keyExtractor={(item) => item.brand}
-                />
-              </View>
-            </View>
+            </ScrollView>
           )}
         </View>
       </NavigationContainer>
@@ -124,10 +178,20 @@ const ProductContainer = () => {
 };
 const styles = StyleSheet.create({
   container: {
+    flexWrap: 'wrap',
+    backgroundColor: 'gainsboro',
+  },
+  listContainer: {
+    height: height,
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    flexWrap: 'wrap',
+    backgroundColor: 'gainsboro',
+  },
+  center: {
     justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 export default ProductContainer;

@@ -14,4 +14,7 @@
 2/ Banner
 
 6-11/9/2000
-Fix Search Function : work one, not clear when onblur
+Fix Search Function : work one, not clear when onblur, Android not work
+
+13/9/2022
+Fix Category : Not work => [].
