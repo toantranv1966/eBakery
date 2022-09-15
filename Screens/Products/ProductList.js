@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, View, Dimensions } from 'react-native';
 
-import ProductCart from './ProductCard';
+import ProductCard from './ProductCard';
 
 var { width } = Dimensions.get('window');
 
@@ -10,12 +10,13 @@ const ProductList = (props) => {
   return (
     <TouchableOpacity
       style={{ width: '50%' }}
-      // onPress={() =>
-      //     props.navigation.navigate("Product Detail", { item: item})
-      // }
+      onPress={() =>
+        props.navigation.navigate('Product Detail', { item: item })
+      }
     >
-      <View style={{ width: width / 2, backgroundColor: 'gainsboro' }}></View>
-      <ProductCart {...item} />
+      <View style={{ width: width / 2, backgroundColor: 'gainsboro' }}>
+        <ProductCard {...item} />
+      </View>
     </TouchableOpacity>
   );
 };

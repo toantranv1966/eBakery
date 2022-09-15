@@ -26,7 +26,7 @@ import {
   Pressable,
 } from 'native-base';
 import { AntDesign } from '@expo/vector-icons';
-import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import ProductList from './ProductList';
 import SearchedProduct from './SearchedProducts';
 import Banner from '../../Shared/Banner';
@@ -47,7 +47,7 @@ const theme = extendTheme({
 });
 const data = require('../../assets/data/products.json');
 const productsCategories = require('../../assets/data/categories.json');
-const ProductContainer = () => {
+const ProductContainer = (props) => {
   const [products, setProducts] = useState([]);
   const [productsFiltered, setProductsFiltered] = useState([]);
   const [focus, setFocus] = useState();
@@ -107,72 +107,73 @@ const ProductContainer = () => {
 
   return (
     <NativeBaseProvider theme={theme}>
-      <NavigationContainer>
-        <View>
-          <Stack space={4} w="100%" alignItems="center">
-            <Input
-              variant="rounded"
-              w={{
-                base: '90%',
-                md: '25%',
-              }}
-              InputRightElement={
-                <Pressable onPress={onBlur}>
-                  {focus == true ? (
-                    <Icon
-                      as={<AntDesign name="close" size={24} color="black" />}
-                      size={5}
-                      mr="2"
-                      color="muted.400"
-                    />
-                  ) : null}
-                </Pressable>
-              }
-              placeholder="Search"
-              onFocus={openList}
-              onChangeText={(text) => searchProduct(text)}
-            />
-          </Stack>
-
-          {focus == true ? (
-            <SearchedProduct productsFiltered={productsFiltered} />
-          ) : (
-            <ScrollView>
-              <View>
-                <View>
-                  <Banner />
-                </View>
-                <View>
-                  <CategoryFilter
-                    categories={categories}
-                    categoryFilter={changeCtg}
-                    productsCtg={productsCtg}
-                    active={active}
-                    setActive={setActive}
+      <View>
+        <Stack space={4} w="100%" alignItems="center">
+          <Input
+            variant="rounded"
+            w={{
+              base: '90%',
+              md: '25%',
+            }}
+            InputRightElement={
+              <Pressable onPress={onBlur}>
+                {focus == true ? (
+                  <Icon
+                    as={<AntDesign name="close" size={24} color="black" />}
+                    size={5}
+                    mr="2"
+                    color="muted.400"
                   />
-                </View>
-                {productsCtg.length > 0 ? (
-                  <View style={styles.listContainer}>
-                    {productsCtg.map((item) => {
-                      return (
-                        <ProductList
-                          // navigation={props.navigation}
-                          key={item.name}
-                          item={item}
-                        />
-                      );
-                    })}
-                  </View>
-                ) : (
-                  <View style={[styles.center, { height: height / 2 }]}>
-                    <Text>No products found</Text>
-                  </View>
-                )}
+                ) : null}
+              </Pressable>
+            }
+            placeholder="Search"
+            onFocus={openList}
+            onChangeText={(text) => searchProduct(text)}
+          />
+        </Stack>
+
+        {focus == true ? (
+          <SearchedProduct
+            navigation={props.navigation}
+            productsFiltered={productsFiltered}
+          />
+        ) : (
+          <ScrollView>
+            <View>
+              <View>
+                <Banner />
               </View>
-            </ScrollView>
-          )}
-        </View>
-      </NavigationContainer>
+              <View>
+                <CategoryFilter
+                  categories={categories}
+                  categoryFilter={changeCtg}
+                  productsCtg={productsCtg}
+                  active={active}
+                  setActive={setActive}
+                />
+              </View>
+              {productsCtg.length > 0 ? (
+                <View style={styles.listContainer}>
+                  {productsCtg.map((item) => {
+                    return (
+                      <ProductList
+                        navigation={props.navigation}
+                        key={item.name}
+                        item={item}
+                      />
+                    );
+                  })}
+                </View>
+              ) : (
+                <View style={[styles.center, { height: height / 2 }]}>
+                  <Text>No products found</Text>
+                </View>
+              )}
+            </View>
+          </ScrollView>
+        )}
+      </View>
     </NativeBaseProvider>
   );
 };

@@ -13,6 +13,9 @@ import {
   Center,
   NativeBaseProvider,
   Button,
+  Pressable,
+  Badge,
+  Flex,
 } from 'native-base';
 
 import ProductList from './ProductList';
@@ -31,50 +34,104 @@ const SearchedProduct = (props) => {
         <FlatList
           data={productsFiltered}
           renderItem={({ item }) => (
-            <Box
-              borderBottomWidth="1"
-              _dark={{
-                borderColor: 'muted.50',
-              }}
-              borderColor="muted.800"
-              pl={['0', '4']}
-              pr={['0', '5']}
-              py="2"
-            >
-              <HStack space={[2, 3]} justifyContent="space-between">
-                <Avatar
-                  size="48px"
-                  source={{
-                    uri: item.image
-                      ? item.image
-                      : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png',
-                  }}
-                />
-                <VStack>
-                  <Text
-                    _dark={{
-                      color: 'warmGray.50',
-                    }}
-                    color="coolGray.800"
-                    bold
-                  >
-                    {item.name}
-                  </Text>
-                  <Text
-                    color="coolGray.600"
-                    _dark={{
-                      color: 'warmGray.200',
-                    }}
-                  >
-                    {item.description}
-                  </Text>
-                  <Button rounded success>
-                    <Text>Add to Cart</Text>
-                  </Button>
-                </VStack>
-                <Spacer />
-              </HStack>
+            <Box alignItems="center">
+              <Pressable
+                onPress={() => {
+                  props.navigation.navigate('Product Detail', { item: item });
+                }}
+                key={item._id}
+                rounded="8"
+                overflow="hidden"
+                borderWidth="1"
+                borderColor="coolGray.300"
+                maxW="96"
+                shadow="3"
+                bg="coolGray.100"
+                p="5"
+              >
+                <Box>
+                  <Flex>
+                    <HStack space={[2, 3]} justifyContent="space-between">
+                      <Avatar
+                        size="48px"
+                        source={{
+                          uri: item.image
+                            ? item.image
+                            : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png',
+                        }}
+                      />
+                      <VStack>
+                        <Text
+                          _dark={{
+                            color: 'warmGray.50',
+                          }}
+                          color="coolGray.800"
+                          bold
+                        >
+                          {item.name}
+                        </Text>
+                        <Text
+                          color="coolGray.600"
+                          _dark={{
+                            color: 'warmGray.200',
+                          }}
+                        >
+                          {item.description}
+                        </Text>
+                        <Button rounded success>
+                          <Text>Add to Cart</Text>
+                        </Button>
+                      </VStack>
+                      <Spacer />
+                    </HStack>
+                  </Flex>
+                </Box>
+              </Pressable>
             </Box>
+            // <Box
+            //   borderBottomWidth="1"
+            //   _dark={{
+            //     borderColor: 'muted.50',
+            //   }}
+            //   borderColor="muted.800"
+            //   pl={['0', '4']}
+            //   pr={['0', '5']}
+            //   py="2"
+            // >
+            //   <HStack space={[2, 3]} justifyContent="space-between">
+            //     <Avatar
+            //       size="48px"
+            //       source={{
+            //         uri: item.image
+            //           ? item.image
+            //           : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png',
+            //       }}
+            //     />
+            //     <VStack>
+            //       <Text
+            //         _dark={{
+            //           color: 'warmGray.50',
+            //         }}
+            //         color="coolGray.800"
+            //         bold
+            //       >
+            //         {item.name}
+            //       </Text>
+            //       <Text
+            //         color="coolGray.600"
+            //         _dark={{
+            //           color: 'warmGray.200',
+            //         }}
+            //       >
+            //         {item.description}
+            //       </Text>
+            //       <Button rounded success>
+            //         <Text>Add to Cart</Text>
+            //       </Button>
+            //     </VStack>
+            //     <Spacer />
+            //   </HStack>
+            // </Box>
           )}
           keyExtractor={(item) => item.id}
         />
