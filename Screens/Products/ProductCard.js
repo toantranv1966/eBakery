@@ -49,7 +49,7 @@ const ProductCard = (props) => {
                 });
             }}
           >
-            <Text style={{ color: 'white' }}>Add</Text>
+            <Text style={{ color: '#092543', fontWeight: 'bold' }}>Add</Text>
           </EasyButton>
         </View>
       ) : (

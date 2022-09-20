@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, LogBox } from 'react-native';
+import { View, Text, LogBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { TailwindProvider } from 'tailwindcss-react-native';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -17,10 +18,12 @@ LogBox.ignoreAllLogs(true);
 export default function App() {
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <Header />
-        <Main />
-      </NavigationContainer>
+      <TailwindProvider>
+        <NavigationContainer>
+          <Header />
+          <Main />
+        </NavigationContainer>
+      </TailwindProvider>
     </Provider>
   );
 }
