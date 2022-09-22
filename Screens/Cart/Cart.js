@@ -103,7 +103,7 @@ const Cart = (props) => {
         <View>
           <Button
             title="Checkout"
-            onPress={() => navigation.navigate('Checkout')}
+            onPress={() => props.navigation.navigate('Checkout')}
           />
         </View>
       </View>
