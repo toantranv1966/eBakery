@@ -25,6 +25,9 @@ import {
   Stack,
   Pressable,
 } from 'native-base';
+
+import baseURL from '../../assets/common/baseUrl';
+import axios from 'axios';
 import { AntDesign } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import ProductList from './ProductList';
@@ -45,8 +48,6 @@ const newColorTheme = {
 const theme = extendTheme({
   colors: newColorTheme,
 });
-const data = require('../../assets/data/products.json');
-const productsCategories = require('../../assets/data/categories.json');
 const ProductContainer = (props) => {
   const [products, setProducts] = useState([]);
   const [productsFiltered, setProductsFiltered] = useState([]);
@@ -55,25 +56,47 @@ const ProductContainer = (props) => {
   const [productsCtg, setProductsCtg] = useState([]);
   const [active, setActive] = useState();
   const [initialState, setInitialState] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setFocus(false);
-    setActive(-1);
+  useFocusEffect(
+    useCallback(() => {
+      setFocus(false);
+      setActive(-1);
 
-    setProducts(data);
-    setProductsFiltered(data);
-    setCategories(productsCategories);
-    setProductsCtg(data);
-    setInitialState(data);
-    return () => {
-      setProducts([]);
-      setProductsFiltered([]);
-      setFocus();
-      setCategories([]);
-      setActive();
-      setInitialState();
-    };
-  }, []);
+      // Products
+      axios
+        .get(`${baseURL}products`)
+        .then((res) => {
+          setProducts(res.data);
+          setProductsFiltered(res.data);
+          setProductsCtg(res.data);
+          setInitialState(res.data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log('Api call error');
+        });
+
+      // Categorie
+      axios
+        .get(`${baseURL}categories`)
+        .then((res) => {
+          setCategories(res.data);
+        })
+        .catch((error) => {
+          console.log('Api call error');
+        });
+
+      return () => {
+        setProducts([]);
+        setProductsFiltered([]);
+        setFocus();
+        setCategories([]);
+        setActive();
+        setInitialState();
+      };
+    }, [])
+  );
 
   // Product Methods
   const searchProduct = (text) => {
@@ -91,7 +114,6 @@ const ProductContainer = (props) => {
 
   // Categories
   const changeCtg = (ctg) => {
-    console.log(ctg);
     {
       ctg === 'all'
         ? [setProductsCtg(initialState), setActive(true)]
@@ -102,79 +124,89 @@ const ProductContainer = (props) => {
             ),
           ];
     }
-    console.log('productsCtg : ', productsCtg);
   };
 
   return (
-    <NativeBaseProvider theme={theme}>
-      <View>
-        <Stack space={4} w="100%" alignItems="center">
-          <Input
-            variant="rounded"
-            w={{
-              base: '90%',
-              md: '25%',
-            }}
-            InputRightElement={
-              <Pressable onPress={onBlur}>
-                {focus == true ? (
-                  <Icon
-                    as={<AntDesign name="close" size={24} color="black" />}
-                    size={5}
-                    mr="2"
-                    color="muted.400"
-                  />
-                ) : null}
-              </Pressable>
-            }
-            placeholder="Search"
-            onFocus={openList}
-            onChangeText={(text) => searchProduct(text)}
-          />
-        </Stack>
-
-        {focus == true ? (
-          <SearchedProduct
-            navigation={props.navigation}
-            productsFiltered={productsFiltered}
-          />
-        ) : (
-          <ScrollView>
-            <View>
-              <View>
-                <Banner />
-              </View>
-              <View>
-                <CategoryFilter
-                  categories={categories}
-                  categoryFilter={changeCtg}
-                  productsCtg={productsCtg}
-                  active={active}
-                  setActive={setActive}
-                />
-              </View>
-              {productsCtg.length > 0 ? (
-                <View style={styles.listContainer}>
-                  {productsCtg.map((item) => {
-                    return (
-                      <ProductList
-                        navigation={props.navigation}
-                        key={item.name}
-                        item={item}
+    <>
+      {loading == false ? (
+        <NativeBaseProvider theme={theme}>
+          <View>
+            <Stack space={4} w="100%" alignItems="center">
+              <Input
+                variant="rounded"
+                w={{
+                  base: '90%',
+                  md: '25%',
+                }}
+                InputRightElement={
+                  <Pressable onPress={onBlur}>
+                    {focus == true ? (
+                      <Icon
+                        as={<AntDesign name="close" size={24} color="black" />}
+                        size={5}
+                        mr="2"
+                        color="muted.400"
                       />
-                    );
-                  })}
+                    ) : null}
+                  </Pressable>
+                }
+                placeholder="Search"
+                onFocus={openList}
+                onChangeText={(text) => searchProduct(text)}
+              />
+            </Stack>
+
+            {focus == true ? (
+              <SearchedProduct
+                navigation={props.navigation}
+                productsFiltered={productsFiltered}
+              />
+            ) : (
+              <ScrollView>
+                <View>
+                  <View>
+                    <Banner />
+                  </View>
+                  <View>
+                    <CategoryFilter
+                      categories={categories}
+                      categoryFilter={changeCtg}
+                      productsCtg={productsCtg}
+                      active={active}
+                      setActive={setActive}
+                    />
+                  </View>
+                  {productsCtg.length > 0 ? (
+                    <View style={styles.listContainer}>
+                      {productsCtg.map((item) => {
+                        return (
+                          <ProductList
+                            navigation={props.navigation}
+                            key={item.name}
+                            item={item}
+                          />
+                        );
+                      })}
+                    </View>
+                  ) : (
+                    <View style={[styles.center, { height: height / 2 }]}>
+                      <Text>No products found</Text>
+                    </View>
+                  )}
                 </View>
-              ) : (
-                <View style={[styles.center, { height: height / 2 }]}>
-                  <Text>No products found</Text>
-                </View>
-              )}
-            </View>
-          </ScrollView>
-        )}
-      </View>
-    </NativeBaseProvider>
+              </ScrollView>
+            )}
+          </View>
+        </NativeBaseProvider>
+      ) : (
+        //Loading
+        <NativeBaseProvider>
+          <Container style={[styles.center, { backgroundColor: '#f2f2f2' }]}>
+            <ActivityIndicator size="large" color="red" />
+          </Container>
+        </NativeBaseProvider>
+      )}
+    </>
   );
 };
 const styles = StyleSheet.create({

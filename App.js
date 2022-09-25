@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, LogBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 import { TailwindProvider } from 'tailwindcss-react-native';
 
 // Redux
@@ -22,6 +23,7 @@ export default function App() {
         <NavigationContainer>
           <Header />
           <Main />
+          <Toast ref={(ref) => Toast.setRef(ref)} />
         </NavigationContainer>
       </TailwindProvider>
     </Provider>

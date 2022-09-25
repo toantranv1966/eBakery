@@ -29,5 +29,5 @@ Shopping Cart
 Sep 22, 2022
 Checkout Navigation
 
-24/9/2022
+Sep 24, 2022
 Checkout finish

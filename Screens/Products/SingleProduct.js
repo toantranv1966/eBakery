@@ -15,6 +15,9 @@ import {
   NativeBaseProvider,
   extendTheme,
 } from 'native-base';
+import Toast from 'react-native-toast-message';
+import EasyButton from '../../Shared/StyledComponents/EasyButton';
+import TrafficLight from '../../Shared/StyledComponents/TrafficLight';
 
 const newColorTheme = {
   brand: {
@@ -28,17 +31,36 @@ const theme = extendTheme({
   colors: newColorTheme,
 });
 
+import { connect } from 'react-redux';
+import * as actions from '../../Redux/Actions/cartActions';
+
 const SingleProduct = (props) => {
   const [item, setItem] = useState(props.route.params.item);
   const [availability, setAvailability] = useState(null);
+  const [availabilityText, setAvailabilityText] = useState('');
+
+  useEffect(() => {
+    if (props.route.params.item.countInStock == 0) {
+      setAvailability(<TrafficLight unavailable></TrafficLight>);
+      setAvailabilityText('Unvailable');
+    } else if (props.route.params.item.countInStock <= 5) {
+      setAvailability(<TrafficLight limited></TrafficLight>);
+      setAvailabilityText('Limited Stock');
+    } else {
+      setAvailability(<TrafficLight available></TrafficLight>);
+      setAvailabilityText('Available');
+    }
+
+    return () => {
+      setAvailability(null);
+      setAvailabilityText('');
+    };
+  }, []);
 
   return (
     <NativeBaseProvider theme={theme}>
       <View style={styles.container}>
         <ScrollView style={{ marginBottom: 80, padding: 5 }}>
-          <View>
-            <Text>Product Detail</Text>
-          </View>
           <View>
             <Image
               source={{
@@ -55,18 +77,53 @@ const SingleProduct = (props) => {
             <Text style={styles.contentText}>{item.brand}</Text>
           </View>
           {/* TODO: Description, Rich Description and Availability */}
+          <View style={styles.availabilityContainer}>
+            <View style={styles.availability}>
+              <Text style={{ marginRight: 10 }}>
+                Availability: {availabilityText}
+              </Text>
+              {availability}
+            </View>
+            <Text>{item.description}</Text>
+          </View>
         </ScrollView>
-        <View style={styles.bottomContainer}>
-          <View>
-            <Text style={styles.price}>$ {item.price}</Text>
+
+        {item.countInStock > 0 ? (
+          <View style={styles.bottomContainer}>
+            <View>
+              <Text style={styles.price}>$ {item.price}</Text>
+            </View>
+            <View>
+              <EasyButton
+                primary
+                medium
+                onPress={() => {
+                  props.addItemToCart(item),
+                    Toast.show({
+                      topOffset: 60,
+                      type: 'success',
+                      text1: `${item.name} added to Cart`,
+                      text2: 'Go to your cart to complete order',
+                    });
+                }}
+              >
+                <Text style={{ color: 'white' }}>Add</Text>
+              </EasyButton>
+            </View>
           </View>
-          <View>
-            <Button title="Add" />
-          </View>
-        </View>
+        ) : (
+          <Text style={{ marginTop: 20 }}>Currently Unavailable</Text>
+        )}
       </View>
     </NativeBaseProvider>
   );
+};
+
+const mapToDispatchToProps = (dispatch) => {
+  return {
+    addItemToCart: (product) =>
+      dispatch(actions.addToCart({ quantity: 1, product })),
+  };
 };
 
 const styles = StyleSheet.create({
@@ -84,6 +141,11 @@ const styles = StyleSheet.create({
     height: 250,
   },
   contentContainer: {
+    marginTop: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  contentHeader: {
     fontWeight: 'bold',
     marginBottom: 20,
   },
@@ -94,7 +156,6 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     position: 'absolute',
     bottom: 0,
     left: 0,
@@ -102,8 +163,17 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 24,
+    margin: 20,
     color: 'red',
+  },
+  availabilityContainer: {
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  availability: {
+    flexDirection: 'row',
+    marginBottom: 10,
   },
 });
 
-export default SingleProduct;
+export default connect(null, mapToDispatchToProps)(SingleProduct);
