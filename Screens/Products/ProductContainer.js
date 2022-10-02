@@ -124,6 +124,7 @@ const ProductContainer = (props) => {
             ),
           ];
     }
+    console.log('ProductsCtg', productsCtg);
   };
 
   return (
