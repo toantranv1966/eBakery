@@ -7,6 +7,7 @@ import {
   Text,
   ScrollView,
   Dimensions,
+  TextInput,
 } from 'react-native';
 import {
   Container,
@@ -35,7 +36,7 @@ import SearchedProduct from './SearchedProducts';
 import Banner from '../../Shared/Banner';
 import CategoryFilter from './CategoryFilter';
 
-var { height } = Dimensions.get('window');
+var { height, width } = Dimensions.get('window');
 
 const newColorTheme = {
   brand: {
@@ -100,6 +101,9 @@ const ProductContainer = (props) => {
 
   // Product Methods
   const searchProduct = (text) => {
+    if (text == '') {
+      setProductsFiltered(products);
+    }
     setProductsFiltered(
       products.filter((i) => i.name.toLowerCase().includes(text.toLowerCase()))
     );
@@ -133,7 +137,13 @@ const ProductContainer = (props) => {
         <NativeBaseProvider theme={theme}>
           <View>
             <Stack space={4} w="100%" alignItems="center">
-              <Input
+              <TextInput
+                placeholder="Search Here"
+                style={styles.textInputStyle}
+                onChangeText={(text) => searchProduct(text)}
+                underlineColorAndroid="transparent"
+              />
+              {/* <Input
                 variant="rounded"
                 w={{
                   base: '90%',
@@ -154,7 +164,7 @@ const ProductContainer = (props) => {
                 placeholder="Search"
                 onFocus={openList}
                 onChangeText={(text) => searchProduct(text)}
-              />
+              /> */}
             </Stack>
 
             {focus == true ? (
@@ -226,6 +236,16 @@ const styles = StyleSheet.create({
   center: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  textInputStyle: {
+    width: width - 10,
+    height: 40,
+    borderWidth: 1,
+    paddingLeft: 20,
+    margin: 5,
+    borderRadius: 20,
+    borderColor: '#ffce00',
+    backgroundColor: '#FFFFFF',
   },
 });
 export default ProductContainer;
