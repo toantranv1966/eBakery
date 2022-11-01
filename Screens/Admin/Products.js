@@ -10,13 +10,14 @@ import {
   TextInput,
 } from 'react-native';
 import { Header, Item, Input } from 'native-base';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useFocusEffect } from '@react-navigation/native';
 
 import axios from 'axios';
 import baseURL from '../../assets/common/baseUrl';
 import { AsyncStorage } from 'react-native';
 import ListItem from './ListItem';
+import EasyButton from '../../Shared/StyledComponents/EasyButton';
 
 var { height, width } = Dimensions.get('window');
 
@@ -88,7 +89,33 @@ const Products = (props) => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
+      <View style={styles.buttonContainer}>
+        <EasyButton
+          secondary
+          medium
+          onPress={() => props.navigation.navigate('Orders')}
+        >
+          <Icon name="shopping-bag" size={18} color="white" />
+          <Text style={styles.buttonText}>Orders</Text>
+        </EasyButton>
+        <EasyButton
+          secondary
+          medium
+          onPress={() => props.navigation.navigate('ProductForm')}
+        >
+          <Icon name="shopping-bag" size={18} color="white" />
+          <Text style={styles.buttonText}>Products</Text>
+        </EasyButton>
+        <EasyButton
+          secondary
+          medium
+          onPress={() => props.navigation.navigate('Categories')}
+        >
+          <Icon name="shopping-bag" size={18} color="white" />
+          <Text style={styles.buttonText}>Category</Text>
+        </EasyButton>
+      </View>
       <View>
         <TextInput
           placeholder="Search Here"
@@ -113,6 +140,7 @@ const Products = (props) => {
                   {...item}
                   navigation={props.navigation}
                   index={index}
+                  delete={deleteProduct}
                 />
               </View>
             );
@@ -147,6 +175,19 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderColor: '#ffce00',
     backgroundColor: '#FFFFFF',
+  },
+  container: {
+    marginBottom: 160,
+    backgroundColor: 'white',
+  },
+  buttonContainer: {
+    margin: 20,
+    alignSelf: 'center',
+    flexDirection: 'row',
+  },
+  buttonText: {
+    marginLeft: 4,
+    color: 'white',
   },
 });
 

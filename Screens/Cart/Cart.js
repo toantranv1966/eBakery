@@ -32,6 +32,8 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import { AntDesign } from '@expo/vector-icons';
 import CartItem from './CartItem';
 
+import EasyButton from '../../Shared/StyledComponents/EasyButton';
+
 import { connect } from 'react-redux';
 import * as actions from '../../Redux/Actions/cartActions';
 
@@ -98,13 +100,18 @@ const Cart = (props) => {
           <Text style={styles.price}>{numeral(total).format('0,0$')}</Text>
         </View>
         <View>
-          <Button title="Clear" onPress={() => props.clearCart()} />
+          <EasyButton danger medium onPress={() => props.clearCart()}>
+            <Text style={{ color: 'white' }}>Clear</Text>
+          </EasyButton>
         </View>
         <View>
-          <Button
-            title="Checkout"
+          <EasyButton
+            primary
+            medium
             onPress={() => props.navigation.navigate('Checkout')}
-          />
+          >
+            <Text style={{ color: 'white' }}>Checkout</Text>
+          </EasyButton>
         </View>
       </View>
     </NativeBaseProvider>

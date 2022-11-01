@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Container } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
+import EasyButton from '../../Shared/StyledComponents/EasyButton';
 
 import axios from 'axios';
 import baseURL from '../../assets/common/baseUrl';
@@ -56,13 +57,16 @@ const UserProfile = (props) => {
           </Text>
         </View>
         <View style={{ marginTop: 80 }}>
-          <Button
-            title={'Sign Out'}
+          <EasyButton
+            primary
+            medium
             onPress={() => [
               AsyncStorage.removeItem('jwt'),
               logoutUser(context.dispatch),
             ]}
-          />
+          >
+            <Text style={{ color: 'white' }}>Sign Out</Text>
+          </EasyButton>
         </View>
       </ScrollView>
     </View>

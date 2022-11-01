@@ -27,6 +27,7 @@ import {
   WarningOutlineIcon,
   CheckIcon,
 } from 'native-base';
+import EasyButton from '../../../Shared/StyledComponents/EasyButton';
 
 const newColorTheme = {
   brand: {
@@ -135,7 +136,9 @@ const Payment = (props) => {
           </Select>
         ) : null}
         <View style={{ marginTop: 60, alignSelf: 'center' }}>
-          <Button title={'Confirm'} onPress={() => checkOut()} />
+          <EasyButton primary medium onPress={() => checkOut()}>
+            <Text style={{ color: 'white' }}>Confirm</Text>
+          </EasyButton>
         </View>
       </Container>
     </NativeBaseProvider>

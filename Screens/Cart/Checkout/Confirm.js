@@ -14,6 +14,7 @@ import {
   Text,
   Image,
 } from 'native-base';
+import EasyButton from '../../../Shared/StyledComponents/EasyButton';
 
 const newColorTheme = {
   brand: {
@@ -90,7 +91,9 @@ const Confirm = (props) => {
               </View>
             ) : null}
             <View style={{ alignItems: 'center', margin: 20 }}>
-              <Button title={'Place order'} onPress={confirmOrder} />
+              <EasyButton primary medium onPress={confirmOrder}>
+                <Text style={{ color: 'white' }}>Place order</Text>
+              </EasyButton>
             </View>
           </View>
         </ScrollView>

@@ -13,7 +13,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import FormContainer from '../../../Shared/Form/FormContainer';
 import Input from '../../../Shared/Form/Input';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
+import EasyButton from '../../../Shared/StyledComponents/EasyButton';
 import { connect } from 'react-redux';
 
 import countries from '../../../assets/countries.json';
@@ -124,7 +124,9 @@ const Checkout = (props) => {
           </Select>
 
           <View style={{ width: '80%', alignItems: 'center' }}>
-            <Button title="Confirm" onPress={() => checkOut()} />
+            <EasyButton primary medium onPress={() => checkOut()}>
+              <Text style={{ color: 'white' }}>Checkout</Text>
+            </EasyButton>
           </View>
         </FormContainer>
       </KeyboardAwareScrollView>

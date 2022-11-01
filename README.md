@@ -37,3 +37,6 @@ User & Authentication
 
 27/9 - 2/10/2022
 Context API & AsyncStorage
+
+25/10 - 27/10/2022
+Admin Panel Part 1
