@@ -40,3 +40,11 @@ Context API & AsyncStorage
 
 25/10 - 27/10/2022
 Admin Panel Part 1
+
+29/10 - 30/10/2022
+Styled Components
+
+1/11/2022 - .10/11/2022 : Admin Panel Part 2
+1/11/2022 : Product Form
+5/11/2022 : Category
+6-10/11/2022 : Order

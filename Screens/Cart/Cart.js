@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   Dimensions,
@@ -36,6 +36,12 @@ import EasyButton from '../../Shared/StyledComponents/EasyButton';
 
 import { connect } from 'react-redux';
 import * as actions from '../../Redux/Actions/cartActions';
+import axios from 'axios';
+import baseURL from '../../assets/common/baseUrl';
+import AsyncStorage from 'react-native';
+
+// Context
+import AuthGlobal from '../../Context/store/AuthGlobal';
 
 var { height, width } = Dimensions.get('window');
 
@@ -52,6 +58,37 @@ const theme = extendTheme({
 });
 
 const Cart = (props) => {
+  const context = useContext(AuthGlobal);
+  // Add this
+  const [productUpdate, setProductUpdate] = useState();
+  const [totalPrice, setTotalPrice] = useState();
+  useEffect(() => {
+    getProducts();
+    return () => {
+      setProductUpdate();
+      setTotalPrice();
+    };
+  }, [props]);
+
+  const getProducts = () => {
+    var products = [];
+    props.cartItems.forEach((cart) => {
+      axios
+        .get(`${baseURL}products/${cart.product}`)
+        .then((data) => {
+          products.push(data.data);
+          setProductUpdate(products);
+          var total = 0;
+          products.forEach((product) => {
+            const price = (total += product.price);
+            setTotalPrice(price);
+          });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    });
+  };
   var total = 0;
   props.cartItems.forEach((cart) => {
     return (total += cart.product.price);
@@ -59,10 +96,10 @@ const Cart = (props) => {
   return (
     <NativeBaseProvider theme={theme}>
       <>
-        {props.cartItems.length ? (
+        {productUpdate ? (
           <Box>
             <SwipeListView
-              data={props.cartItems}
+              data={productUpdate}
               renderItem={(data) => <CartItem item={data} />}
               renderHiddenItem={(data) => (
                 <View style={styles.hiddenContainer}>
@@ -87,6 +124,38 @@ const Cart = (props) => {
               stopLeftSwipe={75}
               rightOpenValue={-75}
             />
+            <View style={styles.bottomContainer}>
+              <View>
+                <Text style={styles.price}>
+                  {numeral(totalPrice).format('0,0$')}
+                </Text>
+              </View>
+              <View>
+                <EasyButton danger medium onPress={() => props.clearCart()}>
+                  <Text style={{ color: 'white' }}>Clear</Text>
+                </EasyButton>
+              </View>
+
+              <View>
+                {context.stateUser.isAuthenticated ? (
+                  <EasyButton
+                    primary
+                    medium
+                    onPress={() => props.navigation.navigate('Checkout')}
+                  >
+                    <Text style={{ color: 'white' }}>Checkout</Text>
+                  </EasyButton>
+                ) : (
+                  <EasyButton
+                    secondary
+                    medium
+                    onPress={() => props.navigation.navigate('Login')}
+                  >
+                    <Text style={{ color: 'white' }}>Login</Text>
+                  </EasyButton>
+                )}
+              </View>
+            </View>
           </Box>
         ) : (
           <View style={styles.emptyContainer}>
@@ -95,25 +164,6 @@ const Cart = (props) => {
           </View>
         )}
       </>
-      <View style={styles.bottomContainer}>
-        <View>
-          <Text style={styles.price}>{numeral(total).format('0,0$')}</Text>
-        </View>
-        <View>
-          <EasyButton danger medium onPress={() => props.clearCart()}>
-            <Text style={{ color: 'white' }}>Clear</Text>
-          </EasyButton>
-        </View>
-        <View>
-          <EasyButton
-            primary
-            medium
-            onPress={() => props.navigation.navigate('Checkout')}
-          >
-            <Text style={{ color: 'white' }}>Checkout</Text>
-          </EasyButton>
-        </View>
-      </View>
     </NativeBaseProvider>
   );
 };
@@ -144,7 +194,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 0,
+    top: height - 220,
     left: 0,
     backgroundColor: 'white',
     elevation: 20,

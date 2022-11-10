@@ -40,7 +40,7 @@ const ProductCard = (props) => {
             primary
             medium
             onPress={() => {
-              props.addItemToCart(props),
+              props.addItemToCart(props.id),
                 Toast.show({
                   topOffset: 60,
                   type: 'success',
@@ -49,7 +49,7 @@ const ProductCard = (props) => {
                 });
             }}
           >
-            <Text style={{ color: '#092543', fontWeight: 'bold' }}>Add</Text>
+            <Text style={{ color: 'white' }}>Add</Text>
           </EasyButton>
         </View>
       ) : (

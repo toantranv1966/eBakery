@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Dimensions, Button } from 'react-native';
 import {
   ScrollView,
@@ -30,18 +30,72 @@ const theme = extendTheme({
 
 import { connect, Connect } from 'react-redux';
 import * as actions from '../../../Redux/Actions/cartActions';
+import Toast from 'react-native-toast-message';
+import axios from 'axios';
+import baseURL from '../../../assets/common/baseUrl';
 
 var { width, height } = Dimensions.get('window');
 
 const Confirm = (props) => {
-  const confirmOrder = () => {
-    setTimeout(() => {
-      props.clearCart();
-      props.navigation.navigate('Cart');
-    }, 500);
+  const finalOrder = props.route.params;
+
+  // Add this Update
+  const [productUpdate, setProductUpdate] = useState();
+  useEffect(() => {
+    if (finalOrder) {
+      getProducts(finalOrder);
+    }
+    return () => {
+      setProductUpdate();
+    };
+  }, [props]);
+
+  // Add this
+  const getProducts = (x) => {
+    const order = x.order.order;
+    var products = [];
+    if (order) {
+      order.orderItems.forEach((cart) => {
+        axios
+          .get(`${baseURL}products/${cart.product}`)
+          .then((data) => {
+            products.push(data.data);
+            setProductUpdate(products);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      });
+    }
   };
 
-  const confirm = props.route.params;
+  const confirmOrder = () => {
+    const order = finalOrder.order.order;
+    axios
+      .post(`${baseURL}orders`, order)
+      .then((res) => {
+        if (res.status == 200 || res.status == 201) {
+          Toast.show({
+            topOffset: 60,
+            type: 'success',
+            text1: 'Order Completed',
+            text2: '',
+          });
+          setTimeout(() => {
+            props.clearCart();
+            props.navigation.navigate('Cart');
+          }, 500);
+        }
+      })
+      .catch((error) => {
+        Toast.show({
+          topOffset: 60,
+          type: 'error',
+          text1: 'Something went wrong',
+          text2: 'Please try again',
+        });
+      });
+  };
 
   return (
     <NativeBaseProvider theme={theme}>
@@ -55,39 +109,45 @@ const Confirm = (props) => {
               <View style={{ borderWidth: 1, borderColor: 'orange' }}>
                 <Text style={styles.title}>Shipping to:</Text>
                 <View style={{ padding: 8 }}>
-                  <Text>Address: {confirm.order.order.shippingAddress1}</Text>
-                  <Text>Address2: {confirm.order.order.shippingAddress2}</Text>
-                  <Text>City: {confirm.order.order.city}</Text>
-                  <Text>Zip Code: {confirm.order.order.zip}</Text>
-                  <Text>Country: {confirm.order.order.country}</Text>
+                  <Text>
+                    Address: {finalOrder.order.order.shippingAddress1}
+                  </Text>
+                  <Text>
+                    Address2: {finalOrder.order.order.shippingAddress2}
+                  </Text>
+                  <Text>City: {finalOrder.order.order.city}</Text>
+                  <Text>Zip Code: {finalOrder.order.order.zip}</Text>
+                  <Text>Country: {finalOrder.order.order.country}</Text>
                 </View>
                 <Text style={styles.title}>Items:</Text>
-                {confirm.order.order.orderItems.map((x) => {
-                  return (
-                    <HStack space={1}>
-                      <View
-                        style={{
-                          justifyContent: 'space-between',
-                          flexDirection: 'row',
-                          alignContent: 'center',
-                          alignItems: 'center',
-                          padding: 10,
-                        }}
-                      >
-                        <Avatar
-                          size="48px"
-                          source={{
-                            uri: x.product.image,
-                          }}
-                        />
-                        <Text style={{ marginLeft: 5 }}>{x.product.name}</Text>
-                        <Text style={{ marginLeft: 20 }}>
-                          {x.product.price}
-                        </Text>
-                      </View>
-                    </HStack>
-                  );
-                })}
+                {productUpdate && (
+                  <>
+                    {productUpdate.map((x) => {
+                      return (
+                        <HStack space={1}>
+                          <View
+                            style={{
+                              justifyContent: 'space-between',
+                              flexDirection: 'row',
+                              alignContent: 'center',
+                              alignItems: 'center',
+                              padding: 10,
+                            }}
+                          >
+                            <Avatar
+                              size="48px"
+                              source={{
+                                uri: x.image,
+                              }}
+                            />
+                            <Text style={{ marginLeft: 5 }}>{x.name}</Text>
+                            <Text style={{ marginLeft: 20 }}>{x.price}</Text>
+                          </View>
+                        </HStack>
+                      );
+                    })}
+                  </>
+                )}
               </View>
             ) : null}
             <View style={{ alignItems: 'center', margin: 20 }}>
