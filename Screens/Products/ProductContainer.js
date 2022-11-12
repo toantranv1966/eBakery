@@ -112,7 +112,7 @@ const ProductContainer = (props) => {
   const openList = () => {
     setFocus(true);
   };
-  const onBlur = () => {
+  const OnBlur = () => {
     setFocus(false);
   };
 
@@ -138,33 +138,13 @@ const ProductContainer = (props) => {
           <View>
             <Stack space={4} w="100%" alignItems="center">
               <TextInput
-                placeholder="Search Here"
                 style={styles.textInputStyle}
-                onChangeText={(text) => searchProduct(text)}
-                underlineColorAndroid="transparent"
-              />
-              {/* <Input
-                variant="rounded"
-                w={{
-                  base: '90%',
-                  md: '25%',
-                }}
-                InputRightElement={
-                  <Pressable onPress={onBlur}>
-                    {focus == true ? (
-                      <Icon
-                        as={<AntDesign name="close" size={24} color="black" />}
-                        size={5}
-                        mr="2"
-                        color="muted.400"
-                      />
-                    ) : null}
-                  </Pressable>
-                }
-                placeholder="Search"
+                placeholder="Search Here"
                 onFocus={openList}
                 onChangeText={(text) => searchProduct(text)}
-              /> */}
+                underlineColorAndroid="transparent"
+                onBlur={OnBlur}
+              />
             </Stack>
 
             {focus == true ? (
@@ -173,7 +153,10 @@ const ProductContainer = (props) => {
                 productsFiltered={productsFiltered}
               />
             ) : (
-              <ScrollView>
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                pagingEnabled={true}
+              >
                 <View>
                   <View>
                     <Banner />

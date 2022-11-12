@@ -3,6 +3,8 @@ import {
   View,
   Text,
   ScrollView,
+  SafeAreaView,
+  StatusBar,
   Button,
   StyleSheet,
   AsyncStorage,
@@ -65,8 +67,13 @@ const UserProfile = (props) => {
   console.log('Orders', orders);
 
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.subContainer}>
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        pagingEnabled
+        horizontal={false}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.subContainer}
+      >
         <Text style={{ fontSize: 30 }}>
           {userProfile ? userProfile.name : ''}
         </Text>
@@ -105,7 +112,7 @@ const UserProfile = (props) => {
           </View>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -113,6 +120,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    paddingTop: StatusBar.currentHeight,
   },
   subContainer: {
     alignItems: 'center',

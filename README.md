@@ -48,3 +48,6 @@ Styled Components
 1/11/2022 : Product Form
 5/11/2022 : Category
 6-10/11/2022 : Order
+
+15h00 10/11/2022 : Fix Search Feature
+9h00 12/11/2022 : Fixed the search feature
