@@ -1,15 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { Badge, Text, HStack } from 'native-base';
+import { ListItem, Badge, Text, View } from 'native-base';
 
 const CategoryFilter = (props) => {
+  const data = props.categories;
+  console.log('Categories', data);
   return (
     <ScrollView
       bounces={true}
       horizontal={true}
       style={{ backgroundColor: '#f2f2f2' }}
     >
-      <HStack style={{ margin: 0, padding: 0, borderRadius: 0 }}>
+      <View
+        style={{ margin: 0, padding: 0, borderRadius: 0, flexDirection: 'row' }}
+      >
         <TouchableOpacity
           key={1}
           onPress={() => {
@@ -28,16 +32,16 @@ const CategoryFilter = (props) => {
         </TouchableOpacity>
         {props.categories.map((item) => (
           <TouchableOpacity
-            key={item._id}
+            key={item.id}
             onPress={() => {
-              props.categoryFilter(item._id),
+              props.categoryFilter(item.id),
                 props.setActive(props.categories.indexOf(item));
             }}
           >
             <Badge
               style={[
                 styles.center,
-                { margin: 5 },
+                { margin: 5, borderRadius: 50 },
                 props.active == props.categories.indexOf(item)
                   ? styles.active
                   : styles.inactive,
@@ -47,7 +51,7 @@ const CategoryFilter = (props) => {
             </Badge>
           </TouchableOpacity>
         ))}
-      </HStack>
+      </View>
     </ScrollView>
   );
 };

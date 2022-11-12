@@ -51,3 +51,4 @@ Styled Components
 
 15h00 10/11/2022 : Fix Search Feature
 9h00 12/11/2022 : Fixed the search feature
+9h00 - 11h00 12/11/2022 : Fixed the categories feature
