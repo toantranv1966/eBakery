@@ -17,6 +17,11 @@ import Main from './Navigators/Main';
 // Screens
 import Header from './Shared/Header';
 
+// Format Number
+import numeral from 'numeral';
+import 'numeral/locales/vi';
+numeral.locale('vi');
+
 LogBox.ignoreAllLogs(true);
 
 export default function App() {
