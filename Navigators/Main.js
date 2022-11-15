@@ -27,7 +27,7 @@ const Main = (props) => {
       initialRouteName="Home"
       shifting={true}
       barStyle={{ backgroundColor: '#ffffff' }}
-      activeColor="#ffffff"
+      activeColor="#ffce00"
       inactiveColor="#000000"
       backBehavior="history"
     >
@@ -43,7 +43,7 @@ const Main = (props) => {
               color={color}
             />
           ),
-          tabBarColor: '#ff4757',
+          tabBarColor: 'gray',
         }}
       />
       <Tab.Screen
@@ -59,7 +59,7 @@ const Main = (props) => {
             />
           ),
           tabBarBadge: props.cartItems?.length,
-          tabBarColor: '#ff6348',
+          tabBarColor: 'gray',
         }}
       />
       {context.stateUser.user.isAdmin == true ? (
@@ -72,7 +72,7 @@ const Main = (props) => {
               <AntDesign name="setting" size={24} color="black" />
             ),
 
-            tabBarColor: '#ff4757',
+            tabBarColor: 'gray',
           }}
         />
       ) : null}
@@ -88,7 +88,7 @@ const Main = (props) => {
               color={color}
             />
           ),
-          tabBarColor: '#ff6348',
+          tabBarColor: 'gray',
         }}
       />
     </Tab.Navigator>

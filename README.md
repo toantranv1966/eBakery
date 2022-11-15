@@ -54,3 +54,5 @@ Styled Components
 9h00 - 11h30 12/11/2022 : Fixed the categories feature
 
 18h30 - 20h30 13/11/2022 : Fix BottomTabNavigator
+
+10h00 15/11/2022 : Edit Cart

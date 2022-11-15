@@ -62,10 +62,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   active: {
-    backgroundColor: '#03bafc',
+    backgroundColor: '#ffce00',
   },
   inactive: {
-    backgroundColor: '#a0e1eb',
+    backgroundColor: 'gray',
   },
 });
 
