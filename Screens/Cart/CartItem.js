@@ -8,8 +8,10 @@ const CartItem = (props) => {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.productContainer}>
-          <Text style={styles.name}>{data.name}</Text>
-          <Text style={styles.price}>{numeral(data.price).format('0,0$')}</Text>
+          <Text style={styles.name}>{data.product.name}</Text>
+          <Text style={styles.price}>
+            {numeral(data.product.price).format('0,0$')}
+          </Text>
         </View>
       </View>
     </SafeAreaView>

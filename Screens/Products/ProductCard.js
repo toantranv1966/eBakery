@@ -40,7 +40,7 @@ const ProductCard = (props) => {
             primary
             medium
             onPress={() => {
-              props.addItemToCart(props.id),
+              props.addItemToCart(props),
                 Toast.show({
                   topOffset: 60,
                   type: 'success',

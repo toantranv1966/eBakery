@@ -13,6 +13,7 @@ import {
   extendTheme,
   Text,
   Image,
+  FlatList,
 } from 'native-base';
 import EasyButton from '../../../Shared/StyledComponents/EasyButton';
 
@@ -37,42 +38,35 @@ import baseURL from '../../../assets/common/baseUrl';
 var { width, height } = Dimensions.get('window');
 
 const Confirm = (props) => {
+  const [user, setUser] = useState();
+
   const finalOrder = props.route.params;
-
-  // Add this Update
-  const [productUpdate, setProductUpdate] = useState();
-  useEffect(() => {
-    if (finalOrder) {
-      getProducts(finalOrder);
-    }
-    return () => {
-      setProductUpdate();
-    };
-  }, [props]);
-
-  // Add this
-  const getProducts = (x) => {
-    const order = x.order.order;
-    var products = [];
-    if (order) {
-      order.orderItems.forEach((cart) => {
-        axios
-          .get(`${baseURL}products/${cart.product}`)
-          .then((data) => {
-            products.push(data.data);
-            setProductUpdate(products);
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      });
-    }
-  };
 
   const confirmOrder = () => {
     const order = finalOrder.order.order;
+    let orderItemsN = [];
+    order.orderItems.forEach((item) => {
+      orderItemsN.push({
+        ['product']: item.product.id,
+        ['quantity']: item.quantity,
+      });
+    });
+
+    let orderUpd = {
+      ['city']: order.city,
+      ['country']: order.country,
+      ['dateOrdered']: order.dateOrdered,
+      ['orderItems']: orderItemsN,
+      ['phone']: order.phone,
+      ['shippingAddress1']: order.shippingAddress1,
+      ['shippingAddress2']: order.shippingAddress2,
+      ['zip']: order.zip,
+      ['user']: order.user,
+      ['status']: order.status,
+    };
+
     axios
-      .post(`${baseURL}orders`, order)
+      .post(`${baseURL}orders`, orderUpd)
       .then((res) => {
         if (res.status == 200 || res.status == 201) {
           Toast.show({
@@ -81,6 +75,7 @@ const Confirm = (props) => {
             text1: 'Order Completed',
             text2: '',
           });
+          console.log('OrderUpd', orderUpd);
           setTimeout(() => {
             props.clearCart();
             props.navigation.navigate('Cart');
@@ -120,34 +115,33 @@ const Confirm = (props) => {
                   <Text>Country: {finalOrder.order.order.country}</Text>
                 </View>
                 <Text style={styles.title}>Items:</Text>
-                {productUpdate && (
-                  <>
-                    {productUpdate.map((x) => {
-                      return (
-                        <HStack space={1}>
-                          <View
-                            style={{
-                              justifyContent: 'space-between',
-                              flexDirection: 'row',
-                              alignContent: 'center',
-                              alignItems: 'center',
-                              padding: 10,
-                            }}
-                          >
-                            <Avatar
-                              size="48px"
-                              source={{
-                                uri: x.image,
-                              }}
-                            />
-                            <Text style={{ marginLeft: 5 }}>{x.name}</Text>
-                            <Text style={{ marginLeft: 20 }}>{x.price}</Text>
-                          </View>
-                        </HStack>
-                      );
-                    })}
-                  </>
-                )}
+
+                {finalOrder.order.order.orderItems.map((x) => {
+                  return (
+                    <HStack space={1}>
+                      <View
+                        style={{
+                          justifyContent: 'space-between',
+                          flexDirection: 'row',
+                          alignContent: 'center',
+                          alignItems: 'center',
+                          padding: 10,
+                        }}
+                      >
+                        <Avatar
+                          size="48px"
+                          source={{
+                            uri: x.product.image,
+                          }}
+                        />
+                        <Text style={{ marginLeft: 5 }}>{x.product.name}</Text>
+                        <Text style={{ marginLeft: 20 }}>
+                          {x.product.price}
+                        </Text>
+                      </View>
+                    </HStack>
+                  );
+                })}
               </View>
             ) : null}
             <View style={{ alignItems: 'center', margin: 20 }}>

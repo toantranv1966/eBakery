@@ -15,9 +15,12 @@ import Input from '../../../Shared/Form/Input';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import AuthGlobal from '../../../Context/store/AuthGlobal';
 import EasyButton from '../../../Shared/StyledComponents/EasyButton';
+
 import { connect } from 'react-redux';
 
 import countries from '../../../assets/countries.json';
+
+import Toast from 'react-native-toast-message';
 
 const newColorTheme = {
   brand: {
