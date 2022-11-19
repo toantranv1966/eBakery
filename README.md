@@ -56,3 +56,7 @@ Styled Components
 18h30 - 20h30 13/11/2022 : Fix BottomTabNavigator
 
 10h00 15/11/2022 - 14h30 17/11/2022 : Problem on cartItem and Confirm order
+
+10h00 19/11/2022 - 15h30 19/11/2022 : Edit Redux
+
+15h30 19/11/2022 : Edit Cart

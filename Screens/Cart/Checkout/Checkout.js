@@ -16,7 +16,9 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import AuthGlobal from '../../../Context/store/AuthGlobal';
 import EasyButton from '../../../Shared/StyledComponents/EasyButton';
 
-import { connect } from 'react-redux';
+// Edit Redux
+// import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import countries from '../../../assets/countries.json';
 
@@ -37,6 +39,9 @@ const theme = extendTheme({
 const Checkout = (props) => {
   const context = useContext(AuthGlobal);
 
+  const cartItems = useSelector((state) => state.shoppingReducer.addedProducts);
+  const dispatch = useDispatch();
+
   const [orderItems, setOrderItems] = useState();
   const [address, setAddress] = useState();
   const [address2, setAddress2] = useState();
@@ -47,7 +52,7 @@ const Checkout = (props) => {
   const [user, setUser] = useState();
 
   useEffect(() => {
-    setOrderItems(props.cartItems);
+    setOrderItems(cartItems);
 
     if (context.stateUser.isAuthenticated) {
       setUser(context.stateUser.user.userId);
@@ -168,11 +173,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => {
-  const { cartItems } = state;
-  return {
-    cartItems: cartItems,
-  };
-};
+// const mapStateToProps = (state) => {
+//   const { cartItems } = state;
+//   return {
+//     cartItems: cartItems,
+//   };
+// };
 
-export default connect(mapStateToProps)(Checkout);
+// export default connect(mapStateToProps)(Checkout);
+export default Checkout;

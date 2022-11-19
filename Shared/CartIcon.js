@@ -2,7 +2,9 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Badge, Text, NativeBaseProvider, extendTheme } from 'native-base';
 
+// Edit Redux
 import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const newColorTheme = {
   brand: {
@@ -17,9 +19,10 @@ const theme = extendTheme({
 });
 
 const CartIcon = (props) => {
+  const cartItems = useSelector((state) => state.shoppingReducer.addedProducts);
   return (
     <>
-      {props.cartItems.length ? (
+      {cartItems.length ? (
         <NativeBaseProvider theme={theme}>
           <Badge style={styles.badge}>
             <Text style={styles.text}>{props.cartItems.length}</Text>
@@ -30,12 +33,12 @@ const CartIcon = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  const { cartItems } = state;
-  return {
-    cartItems: cartItems,
-  };
-};
+// const mapStateToProps = (state) => {
+//   const { cartItems } = state;
+//   return {
+//     cartItems: cartItems,
+//   };
+// };
 
 const styles = StyleSheet.create({
   badge: {
@@ -55,4 +58,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapStateToProps)(CartIcon);
+// export default connect(mapStateToProps)(CartIcon);
+export default CartIcon;

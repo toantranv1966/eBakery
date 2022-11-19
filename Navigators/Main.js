@@ -14,13 +14,17 @@ import AdminNavigator from './AdminNavigator';
 import CartIcon from '../Shared/CartIcon';
 import AuthGlobal from '../Context/store/AuthGlobal';
 
+// Edit Redux
 import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 // const Tab = createBottomTabNavigator();
 const Tab = createMaterialBottomTabNavigator();
 const ICON_SIZE = 30;
 
 const Main = (props) => {
   const context = useContext(AuthGlobal);
+
+  const cartItems = useSelector((state) => state.shoppingReducer.addedProducts);
 
   return (
     <Tab.Navigator
@@ -58,7 +62,7 @@ const Main = (props) => {
               color={color}
             />
           ),
-          tabBarBadge: props.cartItems?.length,
+          tabBarBadge: cartItems?.length,
           tabBarColor: 'gray',
         }}
       />
@@ -95,11 +99,12 @@ const Main = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  const { cartItems } = state;
-  return {
-    cartItems: cartItems,
-  };
-};
+// const mapStateToProps = (state) => {
+//   const { cartItems } = state;
+//   return {
+//     cartItems: cartItems,
+//   };
+// };
 
-export default connect(mapStateToProps)(Main);
+// export default connect(mapStateToProps)(Main);
+export default Main;

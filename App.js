@@ -6,7 +6,9 @@ import { TailwindProvider } from 'tailwindcss-react-native';
 
 // Redux
 import { Provider } from 'react-redux';
-import store from './Redux/store';
+// import store from './Redux/store';
+// Redux Edit
+import store from './modules/store';
 
 // Context API
 import Auth from './Context/store/Auth';

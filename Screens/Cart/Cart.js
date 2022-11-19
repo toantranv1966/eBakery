@@ -34,8 +34,16 @@ import CartItem from './CartItem';
 
 import EasyButton from '../../Shared/StyledComponents/EasyButton';
 
-import { connect } from 'react-redux';
-import * as actions from '../../Redux/Actions/cartActions';
+// import { connect } from 'react-redux';
+// import * as actions from '../../Redux/Actions/cartActions';
+// Edit Redux
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addToCart,
+  decreaseFromCart,
+  emptyCart,
+  removeFromCart,
+} from '../../modules/actions';
 import axios from 'axios';
 import baseURL from '../../assets/common/baseUrl';
 import AsyncStorage from 'react-native';
@@ -59,25 +67,32 @@ const theme = extendTheme({
 
 const Cart = (props) => {
   const context = useContext(AuthGlobal);
-  // Add this
 
+  // Edit Redux
+  // var total = 0;
+  // props.cartItems.forEach((cart) => {
+  //   return (total += cart.product.price);
+  // });
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.shoppingReducer.addedProducts);
   var total = 0;
-  props.cartItems.forEach((cart) => {
+  cartItems.forEach((cart) => {
     return (total += cart.product.price);
   });
   return (
     <NativeBaseProvider theme={theme}>
       <>
-        {props.cartItems.length ? (
+        {cartItems.length ? (
           <Box>
-            <SwipeListView
-              data={props.cartItems}
+            {/* <SwipeListView
+              data={cartItems}
               renderItem={(data) => <CartItem item={data} />}
               renderHiddenItem={(data) => (
                 <View style={styles.hiddenContainer}>
                   <TouchableOpacity
                     style={styles.hiddenButton}
-                    onPress={() => props.removeFromCart(data.item)}
+                    // onPress={() => props.removeFromCart(data.item)}
+                    onPress={() => dispatch(removeFromCart(data.item.id))}
                   >
                     <Icon
                       as={<AntDesign name="delete" size={30} color="black" />}
@@ -95,6 +110,62 @@ const Cart = (props) => {
               leftOpenValue={75}
               stopLeftSwipe={75}
               rightOpenValue={-75}
+            /> */}
+            <FlatList
+              data={cartItems}
+              renderItem={({ item }) => (
+                <Box
+                  borderBottomWidth="1"
+                  _dark={{
+                    borderColor: 'muted.50',
+                  }}
+                  borderColor="muted.800"
+                  pl={['0', '4']}
+                  pr={['0', '5']}
+                  py="2"
+                >
+                  <HStack space={[2, 3]} justifyContent="space-between">
+                    <Avatar
+                      size="48px"
+                      source={{
+                        uri: item.product.image,
+                      }}
+                    />
+                    <VStack>
+                      <Text
+                        _dark={{
+                          color: 'warmGray.50',
+                        }}
+                        color="coolGray.800"
+                        bold
+                      >
+                        {item.product.name}
+                      </Text>
+                      <Text
+                        color="coolGray.600"
+                        _dark={{
+                          color: 'warmGray.200',
+                        }}
+                      >
+                        {item.product.price}
+                      </Text>
+                    </VStack>
+                    <Spacer />
+                    <TouchableOpacity
+                      // onPress={() => props.removeFromCart(data.item)}
+                      onPress={() => dispatch(removeFromCart(item.product.id))}
+                    >
+                      <Icon
+                        as={<AntDesign name="delete" size={30} color="black" />}
+                        size={5}
+                        mr="2"
+                        color="muted.400"
+                      />
+                    </TouchableOpacity>
+                  </HStack>
+                </Box>
+              )}
+              keyExtractor={(item) => item.id}
             />
             <View style={styles.bottomContainer}>
               <View>
@@ -103,7 +174,7 @@ const Cart = (props) => {
                 </Text>
               </View>
               <View>
-                <EasyButton danger medium onPress={() => props.clearCart()}>
+                <EasyButton danger medium onPress={() => dispatch(emptyCart())}>
                   <Text style={{ color: 'white' }}>Clear</Text>
                 </EasyButton>
               </View>
@@ -129,19 +200,19 @@ const Cart = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  const { cartItems } = state;
-  return {
-    cartItems: cartItems,
-  };
-};
+// const mapStateToProps = (state) => {
+//   const { cartItems } = state;
+//   return {
+//     cartItems: cartItems,
+//   };
+// };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    clearCart: () => dispatch(actions.clearCart()),
-    removeFromCart: (item) => dispatch(actions.removeFromCart(item)),
-  };
-};
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     clearCart: () => dispatch(actions.clearCart()),
+//     removeFromCart: (item) => dispatch(actions.removeFromCart(item)),
+//   };
+// };
 
 const styles = StyleSheet.create({
   emptyContainer: {
@@ -180,4 +251,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Cart);
+// export default connect(mapStateToProps, mapDispatchToProps)(Cart);
+export default Cart;

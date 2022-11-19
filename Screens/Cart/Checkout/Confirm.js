@@ -29,16 +29,20 @@ const theme = extendTheme({
   colors: newColorTheme,
 });
 
-import { connect, Connect } from 'react-redux';
-import * as actions from '../../../Redux/Actions/cartActions';
+// Edit Redux
+// import { connect, Connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+// import * as actions from '../../../Redux/Actions/cartActions';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
 import baseURL from '../../../assets/common/baseUrl';
+import { emptyCart } from '../../../modules/actions';
 
 var { width, height } = Dimensions.get('window');
 
 const Confirm = (props) => {
   const [user, setUser] = useState();
+  const dispatch = useDispatch();
 
   const finalOrder = props.route.params;
 
@@ -77,7 +81,8 @@ const Confirm = (props) => {
           });
           console.log('OrderUpd', orderUpd);
           setTimeout(() => {
-            props.clearCart();
+            // props.clearCart();
+            dispatch(emptyCart());
             props.navigation.navigate('Cart');
           }, 500);
         }
@@ -156,11 +161,11 @@ const Confirm = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    clearCart: () => dispatch(actions.clearCart()),
-  };
-};
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     clearCart: () => dispatch(actions.clearCart()),
+//   };
+// };
 
 const styles = StyleSheet.create({
   container: {
@@ -181,4 +186,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-export default connect(null, mapDispatchToProps)(Confirm);
+// export default connect(null, mapDispatchToProps)(Confirm);
+export default Confirm;
