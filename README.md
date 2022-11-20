@@ -59,4 +59,4 @@ Styled Components
 
 10h00 19/11/2022 - 15h30 19/11/2022 : Edit Redux
 
-15h30 19/11/2022 : Edit Cart
+15h30 19/11/2022 14h30 20/11/2022 : Edit Cart Screen & Feature
