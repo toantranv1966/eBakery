@@ -36,6 +36,8 @@ const UserProfile = (props) => {
 
       AsyncStorage.getItem('jwt')
         .then((res) => {
+          console.log('AsyncStorage', res);
+          console.log('UserId', context.stateUser.user.userId);
           axios
             .get(`${baseURL}users/${context.stateUser.user.userId}`, {
               headers: { Authorization: `Bearer ${res}` },

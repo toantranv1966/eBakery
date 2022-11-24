@@ -6,6 +6,8 @@ import {
   Text,
   ScrollView,
   Button,
+  Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 import {
   Left,
@@ -18,6 +20,8 @@ import {
 import Toast from 'react-native-toast-message';
 import EasyButton from '../../Shared/StyledComponents/EasyButton';
 import TrafficLight from '../../Shared/StyledComponents/TrafficLight';
+import { AntDesign } from '@expo/vector-icons';
+import numeral from 'numeral';
 
 const newColorTheme = {
   brand: {
@@ -31,10 +35,12 @@ const theme = extendTheme({
   colors: newColorTheme,
 });
 
-import { connect } from 'react-redux';
-import * as actions from '../../Redux/Actions/cartActions';
+// Edit Redux
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../modules/actions';
 
 const SingleProduct = (props) => {
+  const dispatch = useDispatch();
   const [item, setItem] = useState(props.route.params.item);
   const [availability, setAvailability] = useState(null);
   const [availabilityText, setAvailabilityText] = useState('');
@@ -89,27 +95,48 @@ const SingleProduct = (props) => {
         </ScrollView>
 
         {item.countInStock > 0 ? (
-          <View style={styles.bottomContainer}>
-            <View>
-              <Text style={styles.price}>$ {item.price}</Text>
+          // <View style={styles.bottomContainer}>
+          //   <View>
+          //     <Text style={styles.price}>$ {item.price}</Text>
+          //   </View>
+          //   <View>
+          //     <EasyButton
+          //       primary
+          //       medium
+          //       onPress={() => {
+          //         props.addItemToCart(item),
+          //           Toast.show({
+          //             topOffset: 60,
+          //             type: 'success',
+          //             text1: `${item.name} added to Cart`,
+          //             text2: 'Go to your cart to complete order',
+          //           });
+          //       }}
+          //     >
+          //       <Text style={{ color: 'white' }}>Add</Text>
+          //     </EasyButton>
+          //   </View>
+          // </View>
+          <View style={styles.buttonsContainer}>
+            <View style={styles.itemAddContainer}>
+              <Text style={styles.itemCountText}>
+                {numeral(item.price).format('0,0$')}
+              </Text>
             </View>
-            <View>
-              <EasyButton
-                primary
-                medium
-                onPress={() => {
-                  props.addItemToCart(item),
-                    Toast.show({
-                      topOffset: 60,
-                      type: 'success',
-                      text1: `${item.name} added to Cart`,
-                      text2: 'Go to your cart to complete order',
-                    });
-                }}
-              >
-                <Text style={{ color: 'white' }}>Add</Text>
-              </EasyButton>
-            </View>
+            <TouchableOpacity
+              style={styles.cartButton}
+              onPress={() => {
+                dispatch(addToCart(item, 1));
+                Toast.show({
+                  topOffset: 60,
+                  type: 'success',
+                  text1: `${item.name} added to Cart`,
+                  text2: 'Go to your cart to complete order',
+                });
+              }}
+            >
+              <Text style={styles.cartButtonText}>Thêm vào giỏ</Text>
+            </TouchableOpacity>
           </View>
         ) : (
           <Text style={{ marginTop: 20 }}>Currently Unavailable</Text>
@@ -119,11 +146,47 @@ const SingleProduct = (props) => {
   );
 };
 
-const mapToDispatchToProps = (dispatch) => {
-  return {
-    addItemToCart: (product) =>
-      dispatch(actions.addToCart({ quantity: 1, product })),
-  };
+const { height, width } = Dimensions.get('window');
+
+const setHeight = (h) => (height / 100) * h;
+const setWidth = (w) => (width / 100) * w;
+
+const Colors = {
+  DEFAULT_BLACK: '#0E122B',
+  DEFAULT_GREEN: '#0A8791',
+  DEFAULT_YELLOW: '#ffce00',
+  DEFAULT_GREY: '#C2C2CB',
+  DEFAULT_WHITE: '#FFFFFF',
+  DEFAULT_RED: '#F53920',
+  SECONDARY_RED: '#FF6F59',
+  SECONDARY_WHITE: '#F8F8F8',
+  SECONDARY_GREEN: '#24C869',
+  SECONDARY_BLACK: '#191d35',
+  LIGHT_GREEN: '#CEE8E7',
+  LIGHT_GREY: '#F8F7F7',
+  LIGHT_GREY2: '#EAEAEA',
+  LIGHT_YELLOW: '#FCE6CD',
+  LIGHT_RED: '#FFC8BF',
+  FABEBOOK_BLUE: '#4A61A8',
+  GOOGLE_BLUE: '#53A0F4',
+  INACTIVE_GREY: '#A3A3A3',
+  DARK_ONE: '#121212',
+  DARK_TWO: '#181818',
+  DARK_THREE: '#404040',
+  DARK_FOUR: '#282828',
+  DARK_FIVE: '#B3B3B3',
+};
+
+const Fonts = {
+  POPPINS_BLACK: 'Poppins-Black',
+  POPPINS_BOLD: 'Poppins-Bold',
+  POPPINS_EXTRA_BOLD: 'Poppins-ExtraBold',
+  POPPINS_EXTRA_LIGHT: 'Poppins-ExtraLight',
+  POPPINS_LIGHT: 'Poppins-Light',
+  POPPINS_MEDIUM: 'Poppins-Medium',
+  POPPINS_REGULAR: 'Poppins-Regular',
+  POPPINS_SEMI_BOLD: 'Poppins-SemiBold',
+  POPPINS_THIN: 'Poppins-Thin',
 };
 
 const styles = StyleSheet.create({
@@ -138,8 +201,9 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 250,
+    height: '100%',
   },
+
   contentContainer: {
     marginTop: 20,
     justifyContent: 'center',
@@ -174,6 +238,47 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 10,
   },
+  buttonsContainer: {
+    position: 'absolute',
+    bottom: 0,
+    flexDirection: 'row',
+    paddingHorizontal: setWidth(5),
+    justifyContent: 'space-between',
+    backgroundColor: Colors.DEFAULT_WHITE,
+    width: setWidth(100),
+    paddingVertical: setWidth(2.5),
+  },
+  itemAddContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Colors.LIGHT_GREY2,
+    height: setHeight(6),
+    width: setWidth(40),
+    justifyContent: 'center',
+    borderRadius: 8,
+  },
+  itemCountText: {
+    color: Colors.DEFAULT_BLACK,
+    fontSize: 18,
+    lineHeight: 14 * 1.4,
+    fontFamily: Fonts.POPPINS_SEMI_BOLD,
+    marginHorizontal: 8,
+    fontWeight: 'bold',
+  },
+  cartButton: {
+    backgroundColor: Colors.DEFAULT_YELLOW,
+    height: setHeight(6),
+    width: setWidth(40),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 8,
+  },
+  cartButtonText: {
+    color: Colors.DEFAULT_WHITE,
+    fontSize: 14,
+    lineHeight: 14 * 1.4,
+    fontFamily: Fonts.POPPINS_MEDIUM,
+  },
 });
 
-export default connect(null, mapToDispatchToProps)(SingleProduct);
+export default SingleProduct;

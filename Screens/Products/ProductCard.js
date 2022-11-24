@@ -9,12 +9,9 @@ import {
 } from 'react-native';
 import Toast from 'react-native-toast-message';
 import EasyButton from '../../Shared/StyledComponents/EasyButton';
-// import { connect } from 'react-redux';
-// import * as actions from '../../Redux/Actions/cartActions';
 
 // Edit Redux
 import { useDispatch } from 'react-redux';
-// import { addToCart } from '../modules/actions';
 import { addToCart } from '../../modules/actions';
 
 var { width } = Dimensions.get('window');
@@ -46,9 +43,7 @@ const ProductCard = (props) => {
             primary
             medium
             onPress={() => {
-              // props.addItemToCart(props),
               dispatch(addToCart(props, 1));
-              console.log('Item name', name);
               Toast.show({
                 topOffset: 60,
                 type: 'success',
@@ -66,13 +61,6 @@ const ProductCard = (props) => {
     </View>
   );
 };
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     addItemToCart: (product) =>
-//       dispatch(actions.addToCart({ quantity: 1, product })),
-//   };
-// };
 
 const styles = StyleSheet.create({
   container: {
@@ -112,5 +100,4 @@ const styles = StyleSheet.create({
   },
 });
 
-// export default connect(null, mapDispatchToProps)(ProductCard);
 export default ProductCard;

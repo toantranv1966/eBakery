@@ -20,19 +20,11 @@ import _ from 'lodash';
 
 import CartItem from './CartItem';
 
-import EasyButton from '../../Shared/StyledComponents/EasyButton';
 import Separator from '../../components/Seperator';
 
-// import { connect } from 'react-redux';
-// import * as actions from '../../Redux/Actions/cartActions';
 // Edit Redux
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  addToCart,
-  decreaseFromCart,
-  emptyCart,
-  removeFromCart,
-} from '../../modules/actions';
+import { useSelector } from 'react-redux';
+
 import axios from 'axios';
 import baseURL from '../../assets/common/baseUrl';
 import AsyncStorage from 'react-native';
@@ -42,22 +34,13 @@ import AuthGlobal from '../../Context/store/AuthGlobal';
 
 const Cart = ({ props, navigation }) => {
   const context = useContext(AuthGlobal);
-  const dispatch = useDispatch();
 
   // Edit Redux
-  // var total = 0;
-  // props.cartItems.forEach((cart) => {
-  //   return (total += cart.product.price);
-  // });
   const cartItems = useSelector((state) => state.shoppingReducer.addedProducts);
-  // var total = 0;
-  // cartItems.forEach((cart) => {
-  //   return (total += cart.product.price);
-  // });
+
   const total = _.sumBy(cartItems, (item) => {
     return item.product.price * item.quantity;
   });
-  console.log('Total', total);
   return (
     <View style={styles.container}>
       <StatusBar
