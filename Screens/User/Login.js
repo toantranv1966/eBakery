@@ -21,6 +21,7 @@ const Login = (props) => {
     const isLogin = context.stateUser.isAuthenticated;
     if (isLogin === true) {
       console.log('You was login');
+      console.log('User Profile', context.stateUser.user);
       props.navigation.navigate('UserProfile');
     }
   }, [context.stateUser.isAuthenticated]);

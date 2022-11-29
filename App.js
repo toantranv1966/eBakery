@@ -30,13 +30,13 @@ export default function App() {
   return (
     <Auth>
       <Provider store={store}>
-        <TailwindProvider>
-          <NavigationContainer>
-            <Header />
-            <Main />
-            <Toast ref={(ref) => Toast.setRef(ref)} />
-          </NavigationContainer>
-        </TailwindProvider>
+        {/* <TailwindProvider> */}
+        <NavigationContainer>
+          <Header />
+          <Main />
+          <Toast ref={(ref) => Toast.setRef(ref)} />
+        </NavigationContainer>
+        {/* </TailwindProvider> */}
       </Provider>
     </Auth>
   );

@@ -1,5 +1,6 @@
 import jwt_decode from 'jwt-decode';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import Toast from 'react-native-toast-message';
 import baseURL from '../../assets/common/baseUrl';
 
