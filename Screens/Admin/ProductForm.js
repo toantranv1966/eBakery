@@ -15,7 +15,7 @@ import {
   Select,
   CheckIcon,
 } from 'native-base';
-import FromContainer from '../../Shared/Form/FormContainer';
+import FormContainer from '../../Shared/Form/FormContainer';
 import Input from '../../Shared/Form/Input';
 import EasyButton from '../../Shared/StyledComponents/EasyButton';
 import Error from '../../Shared/Error';
@@ -54,7 +54,7 @@ const ProductForm = (props) => {
   const [countInStock, setCountInStock] = useState();
   const [rating, setRating] = useState(0);
   const [isFeatured, setIsFeature] = useState(false);
-  const [richDescription, setRichDescription] = useState();
+  // const [richDescription, setRichDescription] = useState();
   const [numReviews, setNumReviews] = useState(0);
   const [item, setItem] = useState(null);
 
@@ -141,10 +141,12 @@ const ProductForm = (props) => {
     formData.append('description', description);
     formData.append('category', category);
     formData.append('countInStock', countInStock);
-    formData.append('richDescription', richDescription);
+    // formData.append('richDescription', richDescription);
     formData.append('rating', rating);
     formData.append('numReviews', numReviews);
     formData.append('isFeatured', isFeatured);
+
+    console.log('FormData', formData);
 
     const config = {
       headers: {
@@ -206,7 +208,7 @@ const ProductForm = (props) => {
 
   return (
     <NativeBaseProvider theme={theme}>
-      <FromContainer title="Add Product">
+      <FormContainer title="Add Product">
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={{ uri: mainImage }} />
           <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
@@ -217,9 +219,9 @@ const ProductForm = (props) => {
           <Text style={{ textDecorationLine: 'underline' }}>Brand</Text>
         </View>
         <Input
-          placeholder="Brand"
-          name="brand"
-          id="brand"
+          placeholder={'Brand'}
+          name={'brand'}
+          id={'brand'}
           value={brand}
           onChangeText={(text) => setBrand(text)}
         />
@@ -227,9 +229,9 @@ const ProductForm = (props) => {
           <Text style={{ textDecorationLine: 'underline' }}>Name</Text>
         </View>
         <Input
-          placeholder="Name"
-          name="name"
-          id="name"
+          placeholder={'Name'}
+          name={'name'}
+          id={'name'}
           value={name}
           onChangeText={(text) => setName(text)}
         />
@@ -237,9 +239,9 @@ const ProductForm = (props) => {
           <Text style={{ textDecorationLine: 'underline' }}>Price</Text>
         </View>
         <Input
-          placeholder="Price"
-          name="price"
-          id="price"
+          placeholder={'Price'}
+          name={'price'}
+          id={'price'}
           value={price}
           keyboardType={'numeric'}
           onChangeText={(text) => setPrice(text)}
@@ -250,9 +252,9 @@ const ProductForm = (props) => {
           </Text>
         </View>
         <Input
-          placeholder="Stock"
-          name="stock"
-          id="stock"
+          placeholder={'Stock'}
+          name={'stock'}
+          id={'stock'}
           value={countInStock}
           keyboardType={'numeric'}
           onChangeText={(text) => setCountInStock(text)}
@@ -261,9 +263,9 @@ const ProductForm = (props) => {
           <Text style={{ textDecorationLine: 'underline' }}>Description</Text>
         </View>
         <Input
-          placeholder="Description"
-          name="description"
-          id="description"
+          placeholder={'Description'}
+          name={'description'}
+          id={'description'}
           value={description}
           onChangeText={(text) => setDescription(text)}
         />
@@ -272,7 +274,7 @@ const ProductForm = (props) => {
           minWidth="300"
           defaultValue={''}
           selectedValue={pickerValue}
-          placeholder="Select category"
+          placeholder={'Select category'}
           placeholderStyle={{ color: '#007aff' }}
           placeholderIconColor="#007aff"
           onValueChange={(e) => [setPickerValue(e), setCategory(e)]}
@@ -292,7 +294,7 @@ const ProductForm = (props) => {
             <Text style={styles.buttonText}>Confirm</Text>
           </EasyButton>
         </View>
-      </FromContainer>
+      </FormContainer>
     </NativeBaseProvider>
   );
 };

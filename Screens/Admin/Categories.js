@@ -19,7 +19,7 @@ const Item = (props) => {
   return (
     <View style={styles.item}>
       <Text>{props.item.name}</Text>
-      <EasyButton danger medium onPress={() => props.delete(props.item._id)}>
+      <EasyButton danger medium onPress={() => props.delete(props.item.id)}>
         <Text style={{ color: 'white', fontWeight: 'bold' }}>Delete</Text>
       </EasyButton>
     </View>

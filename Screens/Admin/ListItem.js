@@ -17,6 +17,7 @@ var { height, width } = Dimensions.get('window');
 
 const ListItem = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const id = props.id;
   return (
     <View>
       <Modal
@@ -57,7 +58,7 @@ const ListItem = (props) => {
             <EasyButton
               medium
               danger
-              onPress={() => [props.delete(props._id), setModalVisible(false)]}
+              onPress={() => [props.delete(id), setModalVisible(false)]}
             >
               <Text style={styles.textStyle}>Delete</Text>
             </EasyButton>

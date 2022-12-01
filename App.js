@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, LogBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
-import { TailwindProvider } from 'tailwindcss-react-native';
+// import { TailwindProvider } from 'tailwindcss-react-native';
 
 // Redux
 import { Provider } from 'react-redux';

@@ -9,8 +9,10 @@ import {
   Button,
   TextInput,
 } from 'react-native';
-import { Header, Item, Input } from 'native-base';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+// import { Header, Item, Input } from 'native-base';
+// import Icon from 'react-native-vector-icons/FontAwesome5';
+// import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
+import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 
 import axios from 'axios';
@@ -82,6 +84,7 @@ const Products = (props) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
+        // console.log('Delete', res);
         const products = productFilter.filter((item) => item.id !== id);
         setProductFilter(products);
       })
@@ -96,7 +99,7 @@ const Products = (props) => {
           medium
           onPress={() => props.navigation.navigate('Orders')}
         >
-          <Icon name="shopping-bag" size={18} color="white" />
+          <FontAwesome5 name="shopping-bag" size={20} color="white" />
           <Text style={styles.buttonText}>Orders</Text>
         </EasyButton>
         <EasyButton
@@ -104,7 +107,7 @@ const Products = (props) => {
           medium
           onPress={() => props.navigation.navigate('ProductForm')}
         >
-          <Icon name="shopping-bag" size={18} color="white" />
+          <FontAwesome name="plus-square" size={20} color="white" />
           <Text style={styles.buttonText}>Products</Text>
         </EasyButton>
         <EasyButton
@@ -112,7 +115,7 @@ const Products = (props) => {
           medium
           onPress={() => props.navigation.navigate('Categories')}
         >
-          <Icon name="shopping-bag" size={18} color="white" />
+          <FontAwesome name="plus-square" size={20} color="white" />
           <Text style={styles.buttonText}>Category</Text>
         </EasyButton>
       </View>
@@ -133,18 +136,14 @@ const Products = (props) => {
         <FlatList
           data={productFilter}
           ListHeaderComponent={ListHeader}
-          renderItem={({ item, index }) => {
-            return (
-              <View>
-                <ListItem
-                  {...item}
-                  navigation={props.navigation}
-                  index={index}
-                  delete={deleteProduct}
-                />
-              </View>
-            );
-          }}
+          renderItem={({ item, index }) => (
+            <ListItem
+              {...item}
+              navigation={props.navigation}
+              index={index}
+              delete={deleteProduct}
+            />
+          )}
           keyExtractor={(item) => item.id}
         />
       )}

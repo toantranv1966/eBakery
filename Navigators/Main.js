@@ -1,9 +1,7 @@
 import React, { useContext } from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 // Stacks
 import HomeNavigator from './HomeNavigator';
@@ -15,9 +13,8 @@ import CartIcon from '../Shared/CartIcon';
 import AuthGlobal from '../Context/store/AuthGlobal';
 
 // Edit Redux
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 import { useSelector } from 'react-redux';
-// const Tab = createBottomTabNavigator();
 const Tab = createMaterialBottomTabNavigator();
 const ICON_SIZE = 30;
 
@@ -73,9 +70,12 @@ const Main = (props) => {
           options={{
             title: 'Admin',
             tabBarIcon: ({ focused, color }) => (
-              <AntDesign name="setting" size={24} color="black" />
+              <Ionicons
+                name={focused ? 'settings' : 'settings-outline'}
+                size={24}
+                color="color"
+              />
             ),
-
             tabBarColor: 'gray',
           }}
         />
@@ -87,7 +87,7 @@ const Main = (props) => {
           title: 'User',
           tabBarIcon: ({ focused, color }) => (
             <Icon
-              name={focused ? 'account' : 'account-outline'}
+              name={focused ? 'account-settings' : 'account-settings-outline'}
               size={ICON_SIZE}
               color={color}
             />
@@ -99,12 +99,4 @@ const Main = (props) => {
   );
 };
 
-// const mapStateToProps = (state) => {
-//   const { cartItems } = state;
-//   return {
-//     cartItems: cartItems,
-//   };
-// };
-
-// export default connect(mapStateToProps)(Main);
 export default Main;
