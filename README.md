@@ -66,3 +66,7 @@ Styled Components
 9h00 24/11/2022 - 11h00 29/11/2022 : Fix login Feature
 
 9h00 1/12/2022 - 19h30 1/12/2022 : Fix backend admin & finish fix admin feature.
+
+10h00 4/12/2022 : Vietnamese App
+
+9h00 10/12/2022 - 21/12/2022 : Document Project Bakery Delivery App

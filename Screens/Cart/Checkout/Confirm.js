@@ -30,9 +30,7 @@ const theme = extendTheme({
 });
 
 // Edit Redux
-// import { connect, Connect } from 'react-redux';
 import { useSelector, useDispatch } from 'react-redux';
-// import * as actions from '../../../Redux/Actions/cartActions';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
 import baseURL from '../../../assets/common/baseUrl';
@@ -76,7 +74,7 @@ const Confirm = (props) => {
           Toast.show({
             topOffset: 60,
             type: 'success',
-            text1: 'Order Completed',
+            text1: 'Đặt hàng thành công!',
             text2: '',
           });
           console.log('OrderUpd', orderUpd);
@@ -91,8 +89,8 @@ const Confirm = (props) => {
         Toast.show({
           topOffset: 60,
           type: 'error',
-          text1: 'Something went wrong',
-          text2: 'Please try again',
+          text1: 'Đã xảy ra sự cố',
+          text2: 'Vui lòng thử lại',
         });
       });
   };
@@ -101,25 +99,25 @@ const Confirm = (props) => {
     <NativeBaseProvider theme={theme}>
       <Box flex={1} px="3">
         <Heading fontSize="xl" p="4" pb="3" mt="5">
-          Confirm Order
+          Xác nhận đơn hàng
         </Heading>
         <ScrollView contentContainerStyle={styles.container}>
           <View style={styles.titleContainer}>
             {props.route.params ? (
               <View style={{ borderWidth: 1, borderColor: 'orange' }}>
-                <Text style={styles.title}>Shipping to:</Text>
+                <Text style={styles.title}>Giao hàng đến:</Text>
                 <View style={{ padding: 8 }}>
                   <Text>
-                    Address: {finalOrder.order.order.shippingAddress1}
+                    Địa chỉ 1: {finalOrder.order.order.shippingAddress1}
                   </Text>
                   <Text>
-                    Address2: {finalOrder.order.order.shippingAddress2}
+                    Địa chỉ 2: {finalOrder.order.order.shippingAddress2}
                   </Text>
-                  <Text>City: {finalOrder.order.order.city}</Text>
+                  <Text>Thành phố: {finalOrder.order.order.city}</Text>
                   <Text>Zip Code: {finalOrder.order.order.zip}</Text>
-                  <Text>Country: {finalOrder.order.order.country}</Text>
+                  <Text>Quốc gia: {finalOrder.order.order.country}</Text>
                 </View>
-                <Text style={styles.title}>Items:</Text>
+                <Text style={styles.title}>Các món:</Text>
 
                 {finalOrder.order.order.orderItems.map((x) => {
                   return (
@@ -151,7 +149,7 @@ const Confirm = (props) => {
             ) : null}
             <View style={{ alignItems: 'center', margin: 20 }}>
               <EasyButton primary medium onPress={confirmOrder}>
-                <Text style={{ color: 'white' }}>Place order</Text>
+                <Text style={{ color: 'white' }}>Đặt hàng</Text>
               </EasyButton>
             </View>
           </View>
@@ -160,12 +158,6 @@ const Confirm = (props) => {
     </NativeBaseProvider>
   );
 };
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     clearCart: () => dispatch(actions.clearCart()),
-//   };
-// };
 
 const styles = StyleSheet.create({
   container: {
@@ -186,5 +178,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-// export default connect(null, mapDispatchToProps)(Confirm);
 export default Confirm;

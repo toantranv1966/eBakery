@@ -21,7 +21,6 @@ export const loginUser = (user, dispatch) => {
         const token = data.token;
         AsyncStorage.setItem('jwt', token);
         const decoded = jwt_decode(token);
-        // console.log('DECODED', decoded);
         dispatch(setCurrentUser(decoded, user));
       } else {
         logoutUser(dispatch);
@@ -31,7 +30,7 @@ export const loginUser = (user, dispatch) => {
       Toast.show({
         topOffset: 60,
         type: 'error',
-        text1: 'Please provide correct credentials',
+        text1: 'Vui lòng cung cấp thông tin đăng nhập chính xác',
         text2: '',
       });
       logoutUser(dispatch);

@@ -52,7 +52,7 @@ const ListItem = (props) => {
                 setModalVisible(false),
               ]}
             >
-              <Text style={styles.textStyle}>Edit</Text>
+              <Text style={styles.textStyle}>Sửa</Text>
             </EasyButton>
 
             <EasyButton
@@ -60,7 +60,7 @@ const ListItem = (props) => {
               danger
               onPress={() => [props.delete(id), setModalVisible(false)]}
             >
-              <Text style={styles.textStyle}>Delete</Text>
+              <Text style={styles.textStyle}>Xóa</Text>
             </EasyButton>
           </View>
         </View>

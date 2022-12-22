@@ -17,7 +17,6 @@ import AuthGlobal from '../../../Context/store/AuthGlobal';
 import EasyButton from '../../../Shared/StyledComponents/EasyButton';
 
 // Edit Redux
-// import { connect } from 'react-redux';
 import { useDispatch, useSelector } from 'react-redux';
 
 import countries from '../../../assets/countries.json';
@@ -61,7 +60,7 @@ const Checkout = (props) => {
       Toast.show({
         topOffset: 60,
         type: 'error',
-        text1: 'Please login Checkout',
+        text1: 'Vui lòng đăng nhập để thanh toán',
         text2: '',
       });
     }
@@ -96,7 +95,7 @@ const Checkout = (props) => {
         extraHeight={200}
         enableOnAndroid={true}
       >
-        <FormContainer title={'Shipping Address'}>
+        <FormContainer title={'Thông tin đơn hàng'}>
           <Input
             placeholder={'Phone'}
             name={'phone'}
@@ -151,7 +150,7 @@ const Checkout = (props) => {
 
           <View style={{ width: '80%', alignItems: 'center' }}>
             <EasyButton primary medium onPress={() => checkOut()}>
-              <Text style={{ color: 'white' }}>Checkout</Text>
+              <Text style={{ color: 'white' }}>Thanh toán</Text>
             </EasyButton>
           </View>
         </FormContainer>
@@ -173,12 +172,4 @@ const styles = StyleSheet.create({
   },
 });
 
-// const mapStateToProps = (state) => {
-//   const { cartItems } = state;
-//   return {
-//     cartItems: cartItems,
-//   };
-// };
-
-// export default connect(mapStateToProps)(Checkout);
 export default Checkout;

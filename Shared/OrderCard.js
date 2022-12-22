@@ -16,9 +16,9 @@ import axios from 'axios';
 import baseURL from '../assets/common/baseUrl';
 
 const codes = [
-  { name: 'pending', code: '3' },
-  { name: 'shipped', code: '2' },
-  { name: 'delivered', code: '1' },
+  { name: 'đang chờ', code: '3' },
+  { name: 'vận chuyển', code: '2' },
+  { name: 'đã giao hàng', code: '1' },
 ];
 
 const newColorTheme = {
@@ -51,15 +51,15 @@ const OrderCard = (props) => {
 
     if (props.status == '3') {
       setOrderStatus(<TrafficLight unavailable></TrafficLight>);
-      setStatusText('pending');
+      setStatusText('đang chờ');
       setCardColor('#E74C3C');
     } else if (props.status == '2') {
       setOrderStatus(<TrafficLight limited></TrafficLight>);
-      setStatusText('shipped');
+      setStatusText('vận chuyển');
       setCardColor('#F1C40F');
     } else {
       setOrderStatus(<TrafficLight available></TrafficLight>);
-      setStatusText('delivered');
+      setStatusText('đã giao hàng');
       setCardColor('#2ECC71');
     }
 
@@ -99,7 +99,7 @@ const OrderCard = (props) => {
           Toast.show({
             topOffset: 60,
             type: 'success',
-            text1: 'Order Edited',
+            text1: 'Đã cập nhật đơn.',
             text2: '',
           });
           setTimeout(() => {
@@ -111,8 +111,8 @@ const OrderCard = (props) => {
         Toast.show({
           topOffset: 60,
           type: 'error',
-          text1: 'Something went wrong',
-          text2: 'Please try again',
+          text1: 'Đã xảy ra sự cố',
+          text2: 'Vui lòng thử lại',
         });
       });
   };
@@ -121,21 +121,21 @@ const OrderCard = (props) => {
     <NativeBaseProvider theme={theme}>
       <View style={[{ backgroundColor: cardColor }, styles.container]}>
         <View style={styles.title}>
-          <Text>Order Number: #{props.id}</Text>
+          <Text>Đơn hàng số: #{props.id}</Text>
         </View>
         <View style={{ margin: 10 }}>
           <Text>
-            Status {statusText} {orderStatus}
+            Trạng thái {statusText} {orderStatus}
           </Text>
           <Text>
-            Address: {props.shippingAddress1}
+            Địa chỉ: {props.shippingAddress1}
             {props.shippingAddress2}
           </Text>
-          <Text>City: {props.city}</Text>
-          <Text>Country: {props.country}</Text>
-          <Text>Date Ordered : {props.dateOrdered.split('T')[0]}</Text>
+          <Text>Thành phố: {props.city}</Text>
+          <Text>Quốc gia: {props.country}</Text>
+          <Text>Ngày đặt hàng : {props.dateOrdered.split('T')[0]}</Text>
           <View style={styles.priceContainer}>
-            <Text>Price:</Text>
+            <Text>Tổng tiền:</Text>
             <Text style={styles.price}>$ {props.totalPrice}</Text>
           </View>
 
@@ -146,7 +146,7 @@ const OrderCard = (props) => {
                 minWidth="300"
                 defaultValue={''}
                 selectedValue={statusChange}
-                placeholder="Change Status"
+                placeholder="Thay đổi trạng thái"
                 placeholderStyle={{ color: '#007aff' }}
                 placeholderIconColor="#007aff"
                 onValueChange={(e) => setStatusChange(e)}
@@ -163,7 +163,7 @@ const OrderCard = (props) => {
                 })}
               </Select>
               <EasyButton secondary large onPress={() => updateOrder()}>
-                <Text style={{ color: 'white' }}>Update</Text>
+                <Text style={{ color: 'white' }}>Cập nhật</Text>
               </EasyButton>
             </View>
           ) : null}

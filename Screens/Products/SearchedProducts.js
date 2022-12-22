@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  SafeAreaView,
 } from 'react-native';
 import {
   Box,
@@ -29,40 +30,44 @@ var { width } = Dimensions.get('window');
 const SearchedProduct = (props) => {
   const { productsFiltered } = props;
   return (
-    <Box>
-      <Heading fontSize="xl" p="4" pb="3">
-        Tìm thấy {productsFiltered.length} sản phẩm
-      </Heading>
-      {productsFiltered.length > 0 ? (
-        productsFiltered.map((item) => (
-          <TouchableOpacity
-            style={styles.container}
-            onPress={() => {
-              props.navigation.navigate('Product Detail', { item: item });
-            }}
-            key={item._id}
-          >
-            <Image
-              source={{
-                uri: item.image
-                  ? item.image
-                  : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png',
-              }}
-              resizeMode="contain"
-              style={styles.image}
-            />
-            <Text>{item.name}</Text>
-            <Text>$ {item.price}</Text>
-          </TouchableOpacity>
-        ))
-      ) : (
-        <View style={styles.center}>
-          <Text style={{ alignSelf: 'center' }}>
-            Không có sản phẩm nào phù hợp với tiêu chí đã chọn
-          </Text>
-        </View>
-      )}
-    </Box>
+    <SafeAreaView>
+      <ScrollView>
+        <Box>
+          <Heading fontSize="xl" p="4" pb="3">
+            Tìm thấy {productsFiltered.length} món
+          </Heading>
+          {productsFiltered.length > 0 ? (
+            productsFiltered.map((item) => (
+              <TouchableOpacity
+                style={styles.container}
+                onPress={() => {
+                  props.navigation.navigate('Product Detail', { item: item });
+                }}
+                key={item._id}
+              >
+                <Image
+                  source={{
+                    uri: item.image
+                      ? item.image
+                      : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png',
+                  }}
+                  resizeMode="contain"
+                  style={styles.image}
+                />
+                <Text>{item.name}</Text>
+                <Text>$ {item.price}</Text>
+              </TouchableOpacity>
+            ))
+          ) : (
+            <View style={styles.center}>
+              <Text style={{ alignSelf: 'center' }}>
+                Không có món nào phù hợp với tiêu chí đã chọn
+              </Text>
+            </View>
+          )}
+        </Box>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

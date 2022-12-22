@@ -19,7 +19,7 @@ const Register = (props) => {
 
   const register = () => {
     if (email === '' || name === '' || phone === '' || password === '') {
-      setError('Please fill in the form correctly');
+      setError('Vui lòng điền vào biểu mẫu');
     }
 
     let user = {
@@ -36,8 +36,8 @@ const Register = (props) => {
           Toast.show({
             topOffset: 60,
             type: 'success',
-            text1: 'Registration Succeeded',
-            text2: 'Please Login into your account',
+            text1: 'Bạn đã đăng ký thành công',
+            text2: 'Vui lòng đăng nhập vào tài khoản của bạn',
           });
           setTimeout(() => {
             props.navigation.navigate('Login');
@@ -45,11 +45,12 @@ const Register = (props) => {
         }
       })
       .catch((error) => {
+        console.log('Error register', error);
         Toast.show({
           topOffset: 60,
           type: 'error',
-          text1: 'Something went wrong',
-          text2: 'Please try again',
+          text1: 'Đã xảy ra sự cố',
+          text2: 'Vui lòng thử lại',
         });
       });
   };
@@ -60,7 +61,7 @@ const Register = (props) => {
       extraHeight={200}
       enableOnAndroid={true}
     >
-      <FormContainer title={'Register'}>
+      <FormContainer title={'Đăng ký'}>
         <Input
           placeholder={'Email'}
           name={'email'}
@@ -68,20 +69,20 @@ const Register = (props) => {
           onChangeText={(text) => setEmail(text.toLowerCase())}
         />
         <Input
-          placeholder={'Name'}
+          placeholder={'Tên'}
           name={'name'}
           id={'name'}
           onChangeText={(text) => setName(text)}
         />
         <Input
-          placeholder={'Phone Number'}
+          placeholder={'Số điện thoại'}
           name={'phone'}
           id={'phone'}
           keyboardType={'numeric'}
           onChangeText={(text) => setPhone(text)}
         />
         <Input
-          placeholder={'Password'}
+          placeholder={'Mật khẩu'}
           name={'password'}
           id={'password'}
           secureTextEntry={true}
@@ -92,7 +93,7 @@ const Register = (props) => {
         </View>
         <View>
           <EasyButton large primary onPress={() => register()}>
-            <Text style={{ color: 'white' }}>Register</Text>
+            <Text style={{ color: 'white' }}>Đăng ký</Text>
           </EasyButton>
         </View>
         <View>
@@ -101,7 +102,7 @@ const Register = (props) => {
             secondary
             onPress={() => props.navigation.navigate('Login')}
           >
-            <Text style={{ color: 'white' }}>Back to Login</Text>
+            <Text style={{ color: 'white' }}>Đăng nhập</Text>
           </EasyButton>
         </View>
       </FormContainer>

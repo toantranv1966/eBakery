@@ -76,7 +76,6 @@ const Payment = (props) => {
   const [card, setCard] = useState(null);
 
   const checkOut = () => {
-    // props.navigation.navigate('Payment', { order: order });
     props.navigation.navigate('Confirm', { order });
     console.log('order', order);
     console.log('selected', selected);

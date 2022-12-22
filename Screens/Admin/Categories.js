@@ -11,7 +11,6 @@ import EasyButton from '../../Shared/StyledComponents/EasyButton';
 import baseURL from '../../assets/common/baseUrl';
 import axios from 'axios';
 import { AsyncStorage } from 'react-native';
-// import { add } from "react-native-reanimated";
 
 var { width } = Dimensions.get('window');
 
@@ -20,7 +19,7 @@ const Item = (props) => {
     <View style={styles.item}>
       <Text>{props.item.name}</Text>
       <EasyButton danger medium onPress={() => props.delete(props.item.id)}>
-        <Text style={{ color: 'white', fontWeight: 'bold' }}>Delete</Text>
+        <Text style={{ color: 'white', fontWeight: 'bold' }}>Xóa</Text>
       </EasyButton>
     </View>
   );
@@ -97,7 +96,7 @@ const Categories = (props) => {
       </View>
       <View style={styles.bottomBar}>
         <View>
-          <Text>Add Category</Text>
+          <Text>Thêm danh mục</Text>
         </View>
         <View style={{ width: width / 2.5 }}>
           <TextInput
@@ -108,7 +107,7 @@ const Categories = (props) => {
         </View>
         <View>
           <EasyButton medium primary onPress={() => addCategory()}>
-            <Text style={{ color: 'white', fontWeight: 'bold' }}>Submit</Text>
+            <Text style={{ color: 'white', fontWeight: 'bold' }}>Xác nhận</Text>
           </EasyButton>
         </View>
       </View>

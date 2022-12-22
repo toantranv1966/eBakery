@@ -50,7 +50,7 @@ const UserProfile = (props) => {
         .get(`${baseURL}orders`)
         .then((x) => {
           const data = x.data;
-          console.log(data);
+          // console.log(data);
           const userOrders = data.filter(
             (order) => order.user._id === context.stateUser.user.userId
           );
@@ -65,8 +65,8 @@ const UserProfile = (props) => {
     }, [context.stateUser.isAuthenticated])
   );
 
-  console.log('userProfile:', userProfile);
-  console.log('Orders', orders);
+  // console.log('userProfile:', userProfile);
+  // console.log('Orders', orders);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -84,7 +84,7 @@ const UserProfile = (props) => {
             Email: {userProfile ? userProfile.email : ''}
           </Text>
           <Text style={{ marginTop: 20 }}>
-            Phone: {userProfile ? userProfile.phone : ''}
+            Điện thoại: {userProfile ? userProfile.phone : ''}
           </Text>
         </View>
         <View style={{ marginTop: 80 }}>
@@ -96,11 +96,11 @@ const UserProfile = (props) => {
               logoutUser(context.dispatch),
             ]}
           >
-            <Text style={{ color: 'white' }}>Sign Out</Text>
+            <Text style={{ color: 'white' }}>Đăng xuất</Text>
           </EasyButton>
         </View>
         <View style={styles.order}>
-          <Text style={{ fontSize: 20 }}>My Orders</Text>
+          <Text style={{ fontSize: 20 }}>Đơn hàng của bạn</Text>
           <View>
             {orders ? (
               orders.map((x) => {
@@ -108,7 +108,7 @@ const UserProfile = (props) => {
               })
             ) : (
               <View style={styles.order}>
-                <Text> You have no orders </Text>
+                <Text> Bạn chưa có đơn hàng </Text>
               </View>
             )}
           </View>

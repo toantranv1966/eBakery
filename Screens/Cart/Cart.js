@@ -73,7 +73,7 @@ const Cart = ({ props, navigation }) => {
             <View style={styles.promoCodeContainer}>
               <View style={styles.rowAndCenter}>
                 <Entypo name="ticket" size={30} color={Colors.DEFAULT_YELLOW} />
-                <Text style={styles.promoCodeText}>Add Promo Code</Text>
+                <Text style={styles.promoCodeText}>Nhập mã khuyến mãi</Text>
               </View>
               <Ionicons
                 name="chevron-forward-outline"
@@ -140,13 +140,15 @@ const Cart = ({ props, navigation }) => {
             resizeMode="contain"
           />
           <Text style={styles.emptyCartText}>Giỏ hàng trống</Text>
-          <Text style={styles.emptyCartSubText}>Quay lại đặt hàng</Text>
+          <Text style={styles.emptyCartSubText}>
+            Đặt món và thưởng thức nào!
+          </Text>
           <TouchableOpacity
             style={styles.addButtonEmpty}
             onPress={() => navigation.goBack()}
           >
             <AntDesign name="plus" color={Colors.DEFAULT_WHITE} size={20} />
-            <Text style={styles.addButtonEmptyText}>Add Food</Text>
+            <Text style={styles.addButtonEmptyText}>Đặt món</Text>
           </TouchableOpacity>
           <Separator height={setHeight(15)} />
         </View>

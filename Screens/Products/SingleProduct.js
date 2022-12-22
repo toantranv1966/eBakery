@@ -48,13 +48,13 @@ const SingleProduct = (props) => {
   useEffect(() => {
     if (props.route.params.item.countInStock == 0) {
       setAvailability(<TrafficLight unavailable></TrafficLight>);
-      setAvailabilityText('Unvailable');
+      setAvailabilityText('Tạm hết hàng');
     } else if (props.route.params.item.countInStock <= 5) {
       setAvailability(<TrafficLight limited></TrafficLight>);
-      setAvailabilityText('Limited Stock');
+      setAvailabilityText('Số lượng hạn chế');
     } else {
       setAvailability(<TrafficLight available></TrafficLight>);
-      setAvailabilityText('Available');
+      setAvailabilityText('Món có sẵn');
     }
 
     return () => {
@@ -86,7 +86,7 @@ const SingleProduct = (props) => {
           <View style={styles.availabilityContainer}>
             <View style={styles.availability}>
               <Text style={{ marginRight: 10 }}>
-                Availability: {availabilityText}
+                Tồn kho: {availabilityText}
               </Text>
               {availability}
             </View>
@@ -130,8 +130,8 @@ const SingleProduct = (props) => {
                 Toast.show({
                   topOffset: 60,
                   type: 'success',
-                  text1: `${item.name} added to Cart`,
-                  text2: 'Go to your cart to complete order',
+                  text1: `${item.name} đã thêm món vào giỏ hàng`,
+                  text2: 'Đi tới giỏ hàng để hoàn tất đơn hàng',
                 });
               }}
             >
@@ -139,7 +139,7 @@ const SingleProduct = (props) => {
             </TouchableOpacity>
           </View>
         ) : (
-          <Text style={{ marginTop: 20 }}>Currently Unavailable</Text>
+          <Text style={{ marginTop: 20 }}>Tạm hết hàng</Text>
         )}
       </View>
     </NativeBaseProvider>

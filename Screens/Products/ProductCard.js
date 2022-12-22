@@ -47,8 +47,8 @@ const ProductCard = (props) => {
               Toast.show({
                 topOffset: 60,
                 type: 'success',
-                text1: `${name} added to Cart`,
-                text2: 'Go to your cart to complete order',
+                text1: `đã thêm ${name} vào giỏ hàng`,
+                text2: 'Đi tới giỏ hàng của bạn để hoàn tất đơn hàng',
               });
             }}
           >
@@ -56,7 +56,7 @@ const ProductCard = (props) => {
           </EasyButton>
         </View>
       ) : (
-        <Text style={{ marginTop: 20 }}>Currently Unavailable</Text>
+        <Text style={{ marginTop: 20 }}>Tạm thời hết món</Text>
       )}
     </View>
   );

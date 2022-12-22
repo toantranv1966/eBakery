@@ -6,6 +6,7 @@ import {
   FlatList,
   Text,
   ScrollView,
+  SafeAreaView,
   Dimensions,
   TextInput,
 } from 'react-native';
@@ -131,75 +132,76 @@ const ProductContainer = (props) => {
   };
 
   return (
-    <>
-      {loading == false ? (
-        <NativeBaseProvider theme={theme}>
-          <View>
-            <Stack space={4} w="100%" alignItems="center">
-              <TextInput
-                style={styles.textInputStyle}
-                placeholder="Search Here"
-                onFocus={openList}
-                onChangeText={(text) => searchProduct(text)}
-                underlineColorAndroid="transparent"
-                onBlur={OnBlur}
-              />
-            </Stack>
+    <SafeAreaView>
+      <ScrollView showsVerticalScrollIndicator={false} pagingEnabled={true}>
+        <>
+          {loading == false ? (
+            <NativeBaseProvider theme={theme}>
+              <View>
+                <Stack space={4} w="100%" alignItems="center">
+                  <TextInput
+                    style={styles.textInputStyle}
+                    placeholder="Hôm nay bạn chọn món gì?"
+                    onFocus={openList}
+                    onChangeText={(text) => searchProduct(text)}
+                    underlineColorAndroid="transparent"
+                    onBlur={OnBlur}
+                  />
+                </Stack>
 
-            {focus == true ? (
-              <SearchedProduct
-                navigation={props.navigation}
-                productsFiltered={productsFiltered}
-              />
-            ) : (
-              <ScrollView
-                showsVerticalScrollIndicator={false}
-                pagingEnabled={true}
+                {focus == true ? (
+                  <SearchedProduct
+                    navigation={props.navigation}
+                    productsFiltered={productsFiltered}
+                  />
+                ) : (
+                  <View>
+                    <View>
+                      <Banner />
+                    </View>
+                    <View>
+                      <CategoryFilter
+                        categories={categories}
+                        categoryFilter={changeCtg}
+                        productsCtg={productsCtg}
+                        active={active}
+                        setActive={setActive}
+                      />
+                    </View>
+                    {productsCtg.length > 0 ? (
+                      <View style={styles.listContainer}>
+                        {productsCtg.map((item) => {
+                          return (
+                            <ProductList
+                              navigation={props.navigation}
+                              key={item.name}
+                              item={item}
+                            />
+                          );
+                        })}
+                      </View>
+                    ) : (
+                      <View style={[styles.center, { height: height / 2 }]}>
+                        <Text>Không tìm thấy món</Text>
+                      </View>
+                    )}
+                  </View>
+                )}
+              </View>
+            </NativeBaseProvider>
+          ) : (
+            //Loading
+            <NativeBaseProvider>
+              <Container
+                style={[styles.center, { backgroundColor: '#f2f2f2' }]}
               >
-                <View>
-                  <View>
-                    <Banner />
-                  </View>
-                  <View>
-                    <CategoryFilter
-                      categories={categories}
-                      categoryFilter={changeCtg}
-                      productsCtg={productsCtg}
-                      active={active}
-                      setActive={setActive}
-                    />
-                  </View>
-                  {productsCtg.length > 0 ? (
-                    <View style={styles.listContainer}>
-                      {productsCtg.map((item) => {
-                        return (
-                          <ProductList
-                            navigation={props.navigation}
-                            key={item.name}
-                            item={item}
-                          />
-                        );
-                      })}
-                    </View>
-                  ) : (
-                    <View style={[styles.center, { height: height / 2 }]}>
-                      <Text>No products found</Text>
-                    </View>
-                  )}
-                </View>
-              </ScrollView>
-            )}
-          </View>
-        </NativeBaseProvider>
-      ) : (
-        //Loading
-        <NativeBaseProvider>
-          <Container style={[styles.center, { backgroundColor: '#f2f2f2' }]}>
-            <ActivityIndicator size="large" color="red" />
-          </Container>
-        </NativeBaseProvider>
-      )}
-    </>
+                <ActivityIndicator size="large" color="red" />
+              </Container>
+            </NativeBaseProvider>
+          )}
+        </>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({

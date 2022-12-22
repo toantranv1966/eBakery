@@ -11,8 +11,6 @@ import { loginUser } from '../../Context/actions/Auth.actions';
 
 const Login = (props) => {
   const context = useContext(AuthGlobal);
-  // console.log('context.stateUser', context.stateUser.isAuthenticated);
-  // console.log('sub', context.stateUser.user);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -20,8 +18,8 @@ const Login = (props) => {
   useEffect(() => {
     const isLogin = context.stateUser.isAuthenticated;
     if (isLogin === true) {
-      console.log('You was login');
-      console.log('User Profile', context.stateUser.user);
+      // console.log('You was login');
+      // console.log('User Profile', context.stateUser.user);
       props.navigation.navigate('UserProfile');
     }
   }, [context.stateUser.isAuthenticated]);
@@ -33,23 +31,23 @@ const Login = (props) => {
     };
 
     if (email === '' || password === '') {
-      setError('Please fill in your credentials');
+      setError('Vui lòng điền thông tin đăng nhập của bạn');
     } else {
       loginUser(user, context.dispatch);
     }
   };
 
   return (
-    <FormContainer title={'Login'}>
+    <FormContainer title={'Đăng nhập'}>
       <Input
-        placeholder={'Enter Email'}
+        placeholder={'Email'}
         name={'email'}
         id={'email'}
         value={email}
         onChangeText={(text) => setEmail(text.toLowerCase())}
       />
       <Input
-        placeholder={'Enter Password'}
+        placeholder={'Mật khẩu'}
         name={'password'}
         id={'password'}
         secureTextEntry={true}
@@ -59,17 +57,17 @@ const Login = (props) => {
       <View style={styles.buttonGroup}>
         {error ? <Error message={error} /> : null}
         <EasyButton large primary onPress={() => handleSubmit()}>
-          <Text style={{ color: 'white' }}>Login</Text>
+          <Text style={{ color: 'white' }}>Đăng nhập</Text>
         </EasyButton>
       </View>
       <View style={[{ marginTop: 40 }, styles.buttonGroup]}>
-        <Text style={styles.middleText}>Don't have an account yet?</Text>
+        <Text style={styles.middleText}>Bạn chưa có tài khoản?</Text>
         <EasyButton
           large
           secondary
           onPress={() => props.navigation.navigate('Register')}
         >
-          <Text style={{ color: 'white' }}>Register</Text>
+          <Text style={{ color: 'white' }}>Đăng ký</Text>
         </EasyButton>
       </View>
     </FormContainer>

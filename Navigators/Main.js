@@ -36,7 +36,7 @@ const Main = (props) => {
         name="Home"
         component={HomeNavigator}
         options={{
-          title: 'Home',
+          title: 'Trang chủ',
           tabBarIcon: ({ focused, color }) => (
             <Icon
               name={focused ? 'home' : 'home-outline'}
@@ -51,7 +51,7 @@ const Main = (props) => {
         name="Cart"
         component={CartNavigator}
         options={{
-          title: 'Cart',
+          title: 'Giỏ hàng',
           tabBarIcon: ({ focused, color }) => (
             <Icon
               name={focused ? 'cart' : 'cart-outline'}
@@ -84,7 +84,7 @@ const Main = (props) => {
         name="User Profile"
         component={UserNavigator}
         options={{
-          title: 'User',
+          title: 'Tài khoản',
           tabBarIcon: ({ focused, color }) => (
             <Icon
               name={focused ? 'account-settings' : 'account-settings-outline'}
