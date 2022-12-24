@@ -9,31 +9,9 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import {
-  Left,
-  Right,
-  Container,
-  H1,
-  NativeBaseProvider,
-  extendTheme,
-} from 'native-base';
 import Toast from 'react-native-toast-message';
-import EasyButton from '../../Shared/StyledComponents/EasyButton';
 import TrafficLight from '../../Shared/StyledComponents/TrafficLight';
-import { AntDesign } from '@expo/vector-icons';
 import numeral from 'numeral';
-
-const newColorTheme = {
-  brand: {
-    900: '#5B8DF6',
-    800: '#ffffff',
-    700: '#cccccc',
-  },
-};
-
-const theme = extendTheme({
-  colors: newColorTheme,
-});
 
 // Edit Redux
 import { useDispatch } from 'react-redux';
@@ -48,7 +26,7 @@ const SingleProduct = (props) => {
   useEffect(() => {
     if (props.route.params.item.countInStock == 0) {
       setAvailability(<TrafficLight unavailable></TrafficLight>);
-      setAvailabilityText('Tạm hết hàng');
+      setAvailabilityText('Tạm hết món');
     } else if (props.route.params.item.countInStock <= 5) {
       setAvailability(<TrafficLight limited></TrafficLight>);
       setAvailabilityText('Số lượng hạn chế');
@@ -64,85 +42,61 @@ const SingleProduct = (props) => {
   }, []);
 
   return (
-    <NativeBaseProvider theme={theme}>
-      <View style={styles.container}>
-        <ScrollView style={{ marginBottom: 80, padding: 5 }}>
-          <View>
-            <Image
-              source={{
-                uri: item.image
-                  ? item.image
-                  : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png',
-              }}
-              resizeMode="contain"
-              style={styles.image}
-            />
+    <View style={styles.container}>
+      <ScrollView style={{ marginBottom: 80, padding: 5 }}>
+        <View>
+          <Image
+            source={{
+              uri: item.image
+                ? item.image
+                : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png',
+            }}
+            resizeMode="contain"
+            style={styles.image}
+          />
+        </View>
+        <View style={styles.contentContainer}>
+          <Text style={styles.contentHeader}>{item.name}</Text>
+          <Text style={styles.contentText}>{item.brand}</Text>
+        </View>
+        <View style={styles.availabilityContainer}>
+          <View style={styles.availability}>
+            <Text style={{ marginRight: 10 }}>Tồn kho: {availabilityText}</Text>
+            {availability}
           </View>
-          <View style={styles.contentContainer}>
-            <Text style={styles.contentHeader}>{item.name}</Text>
-            <Text style={styles.contentText}>{item.brand}</Text>
-          </View>
-          {/* TODO: Description, Rich Description and Availability */}
-          <View style={styles.availabilityContainer}>
-            <View style={styles.availability}>
-              <Text style={{ marginRight: 10 }}>
-                Tồn kho: {availabilityText}
-              </Text>
-              {availability}
-            </View>
-            <Text>{item.description}</Text>
-          </View>
-        </ScrollView>
+          <Text>{item.description}</Text>
+        </View>
+      </ScrollView>
 
-        {item.countInStock > 0 ? (
-          // <View style={styles.bottomContainer}>
-          //   <View>
-          //     <Text style={styles.price}>$ {item.price}</Text>
-          //   </View>
-          //   <View>
-          //     <EasyButton
-          //       primary
-          //       medium
-          //       onPress={() => {
-          //         props.addItemToCart(item),
-          //           Toast.show({
-          //             topOffset: 60,
-          //             type: 'success',
-          //             text1: `${item.name} added to Cart`,
-          //             text2: 'Go to your cart to complete order',
-          //           });
-          //       }}
-          //     >
-          //       <Text style={{ color: 'white' }}>Add</Text>
-          //     </EasyButton>
-          //   </View>
-          // </View>
-          <View style={styles.buttonsContainer}>
-            <View style={styles.itemAddContainer}>
-              <Text style={styles.itemCountText}>
-                {numeral(item.price).format('0,0$')}
-              </Text>
-            </View>
-            <TouchableOpacity
-              style={styles.cartButton}
-              onPress={() => {
-                dispatch(addToCart(item, 1));
-                Toast.show({
-                  topOffset: 60,
-                  type: 'success',
-                  text1: `${item.name} đã thêm món vào giỏ hàng`,
-                  text2: 'Đi tới giỏ hàng để hoàn tất đơn hàng',
-                });
-              }}
-            >
-              <Text style={styles.cartButtonText}>Thêm vào giỏ</Text>
-            </TouchableOpacity>
+      {/* Bottom */}
+      {item.countInStock > 0 ? (
+        <View style={styles.bottomContainer}>
+          <View style={styles.itemAddContainer}>
+            <Text style={styles.itemCountText}>
+              {numeral(item.price).format('0,0$')}
+            </Text>
           </View>
-        ) : (
-          <Text style={{ marginTop: 20 }}>Tạm hết hàng</Text>
-        )}
-      </View>
-    </NativeBaseProvider>
+          <TouchableOpacity
+            style={styles.cartButton}
+            onPress={() => {
+              dispatch(addToCart(item, 1));
+              Toast.show({
+                topOffset: 60,
+                type: 'success',
+                text1: `${item.name} đã thêm món vào giỏ hàng`,
+                text2: 'Đi tới giỏ hàng để hoàn tất đơn hàng',
+              });
+            }}
+          >
+            <Text style={styles.cartButtonText}>Thêm vào giỏ</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={[styles.itemAddContainer, setWidth(100)]}>
+          <Text style={[styles.itemCountText]}>Tạm hết món</Text>
+        </View>
+      )}
+    </View>
   );
 };
 
@@ -201,9 +155,8 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: '100%',
+    height: 250,
   },
-
   contentContainer: {
     marginTop: 20,
     justifyContent: 'center',
@@ -218,13 +171,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  bottomContainer: {
-    flexDirection: 'row',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    backgroundColor: 'white',
-  },
+
   price: {
     fontSize: 24,
     margin: 20,
@@ -238,22 +185,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 10,
   },
-  buttonsContainer: {
+  // Bottom
+  bottomContainer: {
+    flexDirection: 'row',
     position: 'absolute',
     bottom: 0,
-    flexDirection: 'row',
-    paddingHorizontal: setWidth(5),
-    justifyContent: 'space-between',
-    backgroundColor: Colors.DEFAULT_WHITE,
-    width: setWidth(100),
-    paddingVertical: setWidth(2.5),
+    left: 0,
+    backgroundColor: 'white',
   },
   itemAddContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: Colors.LIGHT_GREY2,
     height: setHeight(6),
-    width: setWidth(40),
+    width: setWidth(50),
     justifyContent: 'center',
     borderRadius: 8,
   },
@@ -268,7 +213,7 @@ const styles = StyleSheet.create({
   cartButton: {
     backgroundColor: Colors.DEFAULT_YELLOW,
     height: setHeight(6),
-    width: setWidth(40),
+    width: setWidth(50),
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,

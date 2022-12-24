@@ -70,3 +70,5 @@ Styled Components
 10h00 4/12/2022 : Vietnamese App
 
 9h00 10/12/2022 - 21/12/2022 : Document Project Bakery Delivery App
+
+9h00 22/12/2022 - 16h 24/21/2022: Edit SingleProduct
